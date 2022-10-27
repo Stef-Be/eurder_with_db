@@ -2,6 +2,7 @@ package com.switchfully.eurder;
 
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.repository.ItemRepository;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +29,12 @@ class ItemControllerTest {
             "  \"price\": 5.9,\n" +
             "  \"amount\": 5}";
 
+    String requestBodyZeroField = "{\n" +
+            "  \"name\": \"Screw\",\n" +
+            "  \"description\": \"Something to make stuff fixed\",\n" +
+            "  \"price\": 0,\n" +
+            "  \"amount\": 5}";
+
     @Test
     public void addItemHappyPath() {
 
@@ -43,6 +50,24 @@ class ItemControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract();
+    }
+
+    @Test
+    public void addItemWithZeroFieldShowsCorrectError() {
+
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBodyZeroField)
+                .when()
+                .post("/items")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract().response();
+        assertEquals("Price can not be zero!", response.jsonPath().getString("message"));;
     }
 
 

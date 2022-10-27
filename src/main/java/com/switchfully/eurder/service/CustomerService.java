@@ -24,7 +24,7 @@ public class CustomerService {
     }
 
     public void registerNewCustomer(CreateCustomerDTO newCustomerDTO) {
-        validationService.validateNoEmptyFieldsNewCustomer(newCustomerDTO);
+        validationService.validateNoEmptyFields(newCustomerDTO);
         validationService.checkIfUserIsAlreadyCustomer(newCustomerDTO);
         customerRepository.addNewCustomer(customerMapper.mapToCreatedCustomer(newCustomerDTO));
     }
