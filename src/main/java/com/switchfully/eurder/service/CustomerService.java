@@ -26,7 +26,7 @@ public class CustomerService {
     public void registerNewCustomer(CreateCustomerDTO newCustomerDTO) {
         validationService.validateNoEmptyFieldsNewCustomer(newCustomerDTO);
         validationService.checkIfUserIsAlreadyCustomer(newCustomerDTO);
-        customerRepository.addNewCustomer(customerMapper.mapToCustomer(newCustomerDTO));
+        customerRepository.addNewCustomer(customerMapper.mapToCreatedCustomer(newCustomerDTO));
     }
 
     public List<CustomerDTO> getAllCustomers() {
@@ -34,5 +34,9 @@ public class CustomerService {
                 .stream()
                 .map(customer -> customerMapper.mapToDTO(customer))
                 .collect(Collectors.toList());
+    }
+
+    public CustomerDTO getExactCustomer(String id) {
+        return customerMapper.mapToDTO(customerRepository.getExactCustomer(id));
     }
 }

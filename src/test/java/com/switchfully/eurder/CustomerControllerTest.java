@@ -1,6 +1,7 @@
 package com.switchfully.eurder;
 
 import com.switchfully.eurder.api.dto.CustomerDTO;
+import com.switchfully.eurder.api.mapper.CustomerMapper;
 import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import io.restassured.response.Response;
@@ -23,6 +24,9 @@ class CustomerControllerTest {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomerMapper customerMapper;
 
     String requestBody = "{\n" +
             "  \"firstName\": \"Stef\",\n" +
@@ -101,7 +105,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    public void getAllCustomersHappyPath(){
+    public void getAllCustomersHappyPath() {
         customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
 
         customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
@@ -110,8 +114,6 @@ class CustomerControllerTest {
                 .baseUri("http://localhost")
                 .port(port)
                 .header("Content-type", "application/json")
-                .and()
-                .body(requestBody)
                 .when()
                 .get("/customers")
                 .then()
@@ -119,5 +121,26 @@ class CustomerControllerTest {
                 .statusCode(HttpStatus.OK.value())
                 .extract().as(CustomerDTO[].class);
         assertEquals(response.length, 2);
+    }
+
+    @Test
+    public void getExactCustomerHappyPath() {
+        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
+
+        customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
+
+        Customer customerToFind = customerRepository.getAllCustomers().stream().findFirst().orElseThrow();
+
+        CustomerDTO response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .header("Content-type", "application/json")
+                .when()
+                .get("/customers/" + customerToFind.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(CustomerDTO.class);
+        assertEquals(customerToFind, customerMapper.mapToCustomer(response));
     }
 }

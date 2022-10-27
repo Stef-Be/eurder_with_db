@@ -22,4 +22,8 @@ public class CustomerRepository {
     public Collection<Customer> getAllCustomers() {
         return customers.values();
     }
+
+    public Customer getExactCustomer(String id) {
+        return customers.get(id);
+    }
 }

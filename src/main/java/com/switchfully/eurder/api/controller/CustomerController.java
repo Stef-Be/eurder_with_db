@@ -37,4 +37,11 @@ public class CustomerController {
         logger.info("Getting all customers");
         return customerService.getAllCustomers();
     }
+
+    @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerDTO getExactCustomer(@PathVariable String id){
+        logger.info("Getting a customer");
+        return customerService.getExactCustomer(id);
+    }
 }

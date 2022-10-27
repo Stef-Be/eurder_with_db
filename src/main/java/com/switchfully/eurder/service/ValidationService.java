@@ -35,7 +35,7 @@ public class ValidationService {
     }
 
     public void checkIfUserIsAlreadyCustomer(CreateCustomerDTO newCustomerDTO) {
-        Customer customerToAdd = customerMapper.mapToCustomer(newCustomerDTO);
+        Customer customerToAdd = customerMapper.mapToCreatedCustomer(newCustomerDTO);
         if (customerRepository.getAllCustomers().contains(customerToAdd)) {
             throw new IllegalArgumentException("This customer already exists!");
         }

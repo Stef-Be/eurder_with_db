@@ -58,4 +58,8 @@ public class CustomerDTO {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+    public String getId() {
+        return id;
+    }
 }

@@ -8,8 +8,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerMapper {
 
-    public Customer mapToCustomer(CreateCustomerDTO newCustomerDTO) {
+    public Customer mapToCreatedCustomer(CreateCustomerDTO newCustomerDTO) {
         return new Customer(newCustomerDTO.getFirstName(), newCustomerDTO.getLastName(), newCustomerDTO.getEmail(), newCustomerDTO.getAddress(), newCustomerDTO.getPhoneNumber());
+    }
+
+    public Customer mapToCustomer(CustomerDTO customerDTO){
+        return new Customer(customerDTO.getFirstName(), customerDTO.getLastName(), customerDTO.getEmail(), customerDTO.getAddress(), customerDTO.getPhoneNumber());
     }
 
     public CustomerDTO mapToDTO(Customer customer) {
