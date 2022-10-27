@@ -3,6 +3,7 @@ package com.switchfully.eurder.domain.repository;
 import com.switchfully.eurder.domain.customer.Customer;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,5 +17,9 @@ public class CustomerRepository {
 
     public void addNewCustomer(Customer customer) {
         customers.put(customer.getId(), customer);
+    }
+
+    public Collection<Customer> getAllCustomers() {
+        return customers.values();
     }
 }
