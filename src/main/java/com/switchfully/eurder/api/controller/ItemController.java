@@ -21,9 +21,9 @@ public class ItemController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addNewItem(@RequestBody AddItemDTO newItem){
+    public void addNewItem(@RequestHeader (required = false) String authorization, @RequestBody AddItemDTO newItem){
         logger.info("Adding new item");
-        itemService.addNewItem(newItem);
+        itemService.addNewItem(authorization, newItem);
     }
 
 }

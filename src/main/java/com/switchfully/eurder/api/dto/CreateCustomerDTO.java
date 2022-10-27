@@ -8,6 +8,13 @@ public class CreateCustomerDTO {
     private String address;
     private String phoneNumber;
 
+    private String password;
+
+    public CreateCustomerDTO setPassword(String password){
+        this.password = password;
+        return this;
+    }
+
     public CreateCustomerDTO setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
@@ -51,5 +58,9 @@ public class CreateCustomerDTO {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

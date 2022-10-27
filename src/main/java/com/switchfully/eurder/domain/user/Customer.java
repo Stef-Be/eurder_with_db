@@ -1,4 +1,4 @@
-package com.switchfully.eurder.domain.customer;
+package com.switchfully.eurder.domain.user;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -11,13 +11,23 @@ public class Customer {
     private final String address;
     private final String phoneNumber;
 
-    public Customer(String firstName, String lastName, String email, String address, String phoneNumber) {
+    private Role role;
+
+    private String password;
+
+    public Customer(String firstName, String lastName, String email, String address, String phoneNumber, String password) {
         this.id = UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.role = Role.CUSTOMER;
+        this.password = password;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getId() {
@@ -44,6 +54,10 @@ public class Customer {
         return phoneNumber;
     }
 
+    public boolean doesPasswordMatch(String password) {
+        return this.password.equals(password);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,5 +69,9 @@ public class Customer {
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName, email);
+    }
+
+    public boolean canHaveAccessTo(Feature feature) {
+        return role.containsFeature(feature);
     }
 }

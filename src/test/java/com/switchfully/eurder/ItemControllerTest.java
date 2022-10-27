@@ -1,7 +1,9 @@
 package com.switchfully.eurder;
 
 import com.switchfully.eurder.domain.repository.CustomerRepository;
-import com.switchfully.eurder.domain.repository.ItemRepository;
+import com.switchfully.eurder.domain.user.Customer;
+import com.switchfully.eurder.domain.user.Role;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ class ItemControllerTest {
     private int port;
 
     @Autowired
-    private ItemRepository itemRepository;
+            private CustomerRepository customerRepository;
 
     String requestBody = "{\n" +
             "  \"name\": \"Screw\",\n" +
@@ -34,6 +36,8 @@ class ItemControllerTest {
             "  \"description\": \"Something to make stuff fixed\",\n" +
             "  \"price\": 0,\n" +
             "  \"amount\": 5}";
+    Customer adminSteve = new Customer("Steve","The Chief", "admin@eurder.com", "boeien", "moetni", "password");
+
 
     @Test
     public void addItemHappyPath() {
@@ -41,6 +45,10 @@ class ItemControllerTest {
         given()
                 .baseUri("http://localhost")
                 .port(port)
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com", "password")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .and()
                 .body(requestBody)
@@ -58,6 +66,10 @@ class ItemControllerTest {
         Response response = given()
                 .baseUri("http://localhost")
                 .port(port)
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com", "password")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .and()
                 .body(requestBodyZeroField)

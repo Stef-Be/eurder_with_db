@@ -2,7 +2,7 @@ package com.switchfully.eurder;
 
 import com.switchfully.eurder.api.dto.CustomerDTO;
 import com.switchfully.eurder.api.mapper.CustomerMapper;
-import com.switchfully.eurder.domain.customer.Customer;
+import com.switchfully.eurder.domain.user.Customer;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
@@ -79,7 +79,7 @@ class CustomerControllerTest {
     @Test
     public void createSameCustomerShowsErrorMessage() {
 
-        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
+        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter", "pass"));
 
         Response response = given()
                 .baseUri("http://localhost")
@@ -94,14 +94,14 @@ class CustomerControllerTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().response();
 
-        assertEquals("This customer already exists!", response.jsonPath().getString("message"));
+        assertEquals("You are already a customer!", response.jsonPath().getString("message"));
     }
 
     @Test
     public void getAllCustomersHappyPath() {
-        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
+        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter","pass"));
 
-        customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
+        customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter","pass"));
 
         CustomerDTO[] response = given()
                 .baseUri("http://localhost")
@@ -113,14 +113,14 @@ class CustomerControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .extract().as(CustomerDTO[].class);
-        assertEquals(response.length, 2);
+        assertEquals(response.length, customerRepository.getAllCustomers().size());
     }
 
     @Test
     public void getExactCustomerHappyPath() {
-        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
+        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter","pass"));
 
-        customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
+        customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter","pass"));
 
         Customer customerToFind = customerRepository.getAllCustomers().stream().findFirst().orElseThrow();
 

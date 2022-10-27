@@ -9,6 +9,12 @@ public class CustomerDTO {
     private String address;
     private String phoneNumber;
 
+    private String password;
+public CustomerDTO setPassword(String password){
+        this.password = password;
+        return this;
+    }
+
     public CustomerDTO setID(String id){
         this.id = id;
         return this;
@@ -61,5 +67,9 @@ public class CustomerDTO {
 
     public String getId() {
         return id;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
