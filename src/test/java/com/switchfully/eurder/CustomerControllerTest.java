@@ -1,5 +1,6 @@
 package com.switchfully.eurder;
 
+import com.switchfully.eurder.api.dto.CustomerDTO;
 import com.switchfully.eurder.domain.customer.Customer;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import io.restassured.response.Response;
@@ -97,5 +98,26 @@ class CustomerControllerTest {
                 .extract().response();
 
         assertEquals("This customer already exists!", response.jsonPath().getString("message"));
+    }
+
+    @Test
+    public void getAllCustomersHappyPath(){
+        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
+
+        customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter"));
+
+        CustomerDTO[] response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .when()
+                .get("/customers")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract().as(CustomerDTO[].class);
+        assertEquals(response.length, 2);
     }
 }
