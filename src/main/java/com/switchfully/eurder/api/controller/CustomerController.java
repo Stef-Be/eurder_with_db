@@ -13,7 +13,6 @@ import java.util.List;
 
 @RequestMapping("customers")
 @RestController
-@CrossOrigin
 
 public class CustomerController {
     private final CustomerService customerService;

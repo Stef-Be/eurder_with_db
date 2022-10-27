@@ -44,13 +44,6 @@ class CustomerControllerTest {
 
     @Test
     public void createCustomerHappyPath() {
-        String requestBody = "{\n" +
-                "  \"firstName\": \"Stef\",\n" +
-                "  \"lastName\": \"Bemindt\",\n" +
-                "  \"email\": \"NoneAYaBussiness@something.com\",\n" +
-                "  \"address\": \"Funstreet 21 2000 Non-Parking\",\n" +
-                "  \"phoneNumber\": \"123456789\"}";
-
         given()
                 .baseUri("http://localhost")
                 .port(port)
