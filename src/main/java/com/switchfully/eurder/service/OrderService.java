@@ -1,6 +1,7 @@
 package com.switchfully.eurder.service;
 
 import com.switchfully.eurder.api.dto.AddOrderDTO;
+import com.switchfully.eurder.api.dto.PrintOrderDTO;
 import com.switchfully.eurder.api.mapper.OrderMapper;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.repository.ItemRepository;
@@ -27,9 +28,10 @@ public class OrderService {
         this.securityService = securityService;
     }
 
-    public void addNewOrder(String authorization, AddOrderDTO newOrder) {
+    public PrintOrderDTO addNewOrder(String authorization, AddOrderDTO newOrder) {
         securityService.validateAuthorization(authorization, ORDER_ITEMS);
         Customer orderingCustomer = customerRepository.getCustomerbyEmail(securityService.getEmail(authorization));
         orderRepository.addNewOrder(orderingCustomer, orderMapper.mapToOrder(newOrder));
+        return new PrintOrderDTO(newOrder.getItemGroupDTOList(), "Final price: " + orderRepository.calculateFinalPrice(newOrder));
     }
 }

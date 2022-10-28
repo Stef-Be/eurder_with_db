@@ -38,7 +38,6 @@ public class ItemController {
     public void addNewOrder(@RequestHeader (required = false) String authorization, @RequestBody AddOrderDTO newOrder){
         logger.info("Adding new order");
         orderService.addNewOrder(authorization, newOrder);
-        logger.info("Showing a new order");
     }
 
 
