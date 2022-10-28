@@ -1,8 +1,7 @@
-package com.switchfully.eurder.api.dto;
+package com.switchfully.eurder.api.dto.customer;
 
-public class CustomerDTO {
+public class CreateCustomerDTO {
 
-    private String id;
     private String firstName;
     private String lastName;
     private String email;
@@ -10,37 +9,33 @@ public class CustomerDTO {
     private String phoneNumber;
 
     private String password;
-public CustomerDTO setPassword(String password){
+
+    public CreateCustomerDTO setPassword(String password){
         this.password = password;
         return this;
     }
 
-    public CustomerDTO setID(String id){
-        this.id = id;
-        return this;
-    }
-
-    public CustomerDTO setFirstName(String firstName) {
+    public CreateCustomerDTO setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
 
-    public CustomerDTO setLastName(String lastName) {
+    public CreateCustomerDTO setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
 
-    public CustomerDTO setEmail(String email) {
+    public CreateCustomerDTO setEmail(String email) {
         this.email = email;
         return this;
     }
 
-    public CustomerDTO setAddress(String address) {
+    public CreateCustomerDTO setAddress(String address) {
         this.address = address;
         return this;
     }
 
-    public CustomerDTO setPhoneNumber(String phoneNumber) {
+    public CreateCustomerDTO setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
@@ -63,10 +58,6 @@ public CustomerDTO setPassword(String password){
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getPassword() {

@@ -1,11 +1,9 @@
 package com.switchfully.eurder.api.mapper;
 
-import com.switchfully.eurder.api.dto.AddItemDTO;
-import com.switchfully.eurder.api.dto.PrintItemDTO;
+import com.switchfully.eurder.api.dto.item.AddItemDTO;
+import com.switchfully.eurder.api.dto.item.PrintItemDTO;
 import com.switchfully.eurder.domain.item.Item;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 @Component
 public class ItemMapper {

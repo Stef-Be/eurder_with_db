@@ -1,9 +1,10 @@
 package com.switchfully.eurder;
 
-import com.switchfully.eurder.api.dto.CustomerDTO;
+import com.switchfully.eurder.api.dto.customer.ShowCustomerDTO;
 import com.switchfully.eurder.api.mapper.CustomerMapper;
 import com.switchfully.eurder.domain.user.Customer;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,16 +104,20 @@ class CustomerControllerTest {
 
         customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter","pass"));
 
-        CustomerDTO[] response = given()
+        ShowCustomerDTO[] response = given()
                 .baseUri("http://localhost")
                 .port(port)
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com", "password")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .when()
                 .get("/customers")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
-                .extract().as(CustomerDTO[].class);
+                .extract().as(ShowCustomerDTO[].class);
         assertEquals(response.length, customerRepository.getAllCustomers().size());
     }
 
@@ -124,16 +129,20 @@ class CustomerControllerTest {
 
         Customer customerToFind = customerRepository.getAllCustomers().stream().findFirst().orElseThrow();
 
-        CustomerDTO response = given()
+        ShowCustomerDTO response = given()
                 .baseUri("http://localhost")
                 .port(port)
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com", "password")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .when()
                 .get("/customers/" + customerToFind.getId())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
-                .extract().as(CustomerDTO.class);
-        assertEquals(customerToFind, customerMapper.mapToCustomer(response));
+                .extract().as(ShowCustomerDTO.class);
+        assertEquals(customerToFind, customerMapper.mapToCustomerToShow(response));
     }
 }

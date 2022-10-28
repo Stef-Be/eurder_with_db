@@ -1,24 +1,27 @@
 package com.switchfully.eurder;
 
-import com.switchfully.eurder.domain.user.Customer;
+import com.switchfully.eurder.api.dto.order.PrintOrderDTO;
+import com.switchfully.eurder.domain.repository.ItemRepository;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
-
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class ItemControllerTest {
+class OrderControllerTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     String requestBody = "{\n" +
             "  \"name\": \"Screw\",\n" +
@@ -26,59 +29,39 @@ class ItemControllerTest {
             "  \"price\": 5.9,\n" +
             "  \"amount\": 5}";
 
-    String requestBodyZeroField = "{\n" +
-            "  \"name\": \"Screw\",\n" +
-            "  \"description\": \"Something to make stuff fixed\",\n" +
-            "  \"price\": 0,\n" +
-            "  \"amount\": 5}";
-    Customer adminSteve = new Customer("Steve", "The Chief", "admin@eurder.com", "boeien", "moetni", "password");
-
     @Test
-    public void addItemHappyPath() {
-
-        given()
+    void orderItemsHappyPath() {
+        String itemId = itemRepository.getItems().get(0).getId();
+        String orderBody = "{\n" +
+                "  \"itemGroupDTOList\": [\n" +
+                "    {\n" +
+                "      \"itemId\": \"" + itemId + "\",\n" +
+                "      \"amount\": 5\n" +
+                "    }\n" +
+                "  ]\n" +
+                "}";
+        PrintOrderDTO response = given()
                 .baseUri("http://localhost")
                 .port(port)
                 .auth()
                 .preemptive()
-                .basic("admin@eurder.com", "password")
+                .basic("customer@eurder.com", "password")
                 .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .and()
-                .body(requestBody)
+                .body(orderBody)
                 .when()
-                .post("/items")
+                .post("/orders")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
-                .extract();
+                .extract().as(PrintOrderDTO.class);
+
+        Assertions.assertEquals(response.getFinalPrice(), "Final price: "+itemRepository.getItem(itemId).getPrice()*5);
     }
 
     @Test
-    public void addItemWithZeroFieldShowsCorrectError() {
-
-        Response response = given()
-                .baseUri("http://localhost")
-                .port(port)
-                .auth()
-                .preemptive()
-                .basic("admin@eurder.com", "password")
-                .header("Accept", ContentType.JSON.getAcceptHeader())
-                .header("Content-type", "application/json")
-                .and()
-                .body(requestBodyZeroField)
-                .when()
-                .post("/items")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .extract().response();
-        assertEquals("Price must be more than 0!", response.jsonPath().getString("message"));
-        ;
-    }
-
-    @Test
-    void getAllItemsHappyPath(){
+    void orderItemsUnauthorized() {
         given()
                 .baseUri("http://localhost")
                 .port(port)
@@ -90,10 +73,11 @@ class ItemControllerTest {
                 .and()
                 .body(requestBody)
                 .when()
-                .get("/items")
+                .post("/orders")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.FORBIDDEN.value())
                 .extract();
     }
+
 }

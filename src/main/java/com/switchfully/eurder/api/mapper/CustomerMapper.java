@@ -1,7 +1,7 @@
 package com.switchfully.eurder.api.mapper;
 
-import com.switchfully.eurder.api.dto.CreateCustomerDTO;
-import com.switchfully.eurder.api.dto.CustomerDTO;
+import com.switchfully.eurder.api.dto.customer.CreateCustomerDTO;
+import com.switchfully.eurder.api.dto.customer.ShowCustomerDTO;
 import com.switchfully.eurder.domain.user.Customer;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +17,16 @@ public class CustomerMapper {
                             newCustomerDTO.getPassword());
     }
 
-    public Customer mapToCustomer(CustomerDTO customerDTO){
-        return new Customer(customerDTO.getFirstName(), customerDTO.getLastName(), customerDTO.getEmail(), customerDTO.getAddress(), customerDTO.getPhoneNumber(), customerDTO.getPassword());
+    public Customer mapToCustomerToShow(ShowCustomerDTO showCustomerDTO) {
+        return new Customer(showCustomerDTO.getFirstName(),
+                showCustomerDTO.getLastName(),
+                showCustomerDTO.getEmail(),
+                showCustomerDTO.getAddress(),
+                showCustomerDTO.getPhoneNumber(),null);
     }
 
-    public CustomerDTO mapToDTO(Customer customer) {
-        return new CustomerDTO()
-                .setID(customer.getId())
+    public ShowCustomerDTO mapToShowDTO(Customer customer) {
+        return new ShowCustomerDTO().setID(customer.getId())
                 .setFirstName(customer.getFirstName())
                 .setLastName(customer.getLastName())
                 .setEmail(customer.getEmail())

@@ -1,5 +1,6 @@
 package com.switchfully.eurder.domain.item;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Item {
@@ -35,5 +36,18 @@ public class Item {
 
     public int getAmount() {
         return amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return Objects.equals(name, item.name) && Objects.equals(description, item.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description);
     }
 }

@@ -1,7 +1,7 @@
 package com.switchfully.eurder.api.controller;
 
-import com.switchfully.eurder.api.dto.CreateCustomerDTO;
-import com.switchfully.eurder.api.dto.CustomerDTO;
+import com.switchfully.eurder.api.dto.customer.CreateCustomerDTO;
+import com.switchfully.eurder.api.dto.customer.ShowCustomerDTO;
 import com.switchfully.eurder.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,15 +32,15 @@ public class CustomerController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CustomerDTO> getAllCustomers(){
+    public List<ShowCustomerDTO> getAllCustomers(@RequestHeader String authorization){
         logger.info("Getting all customers");
-        return customerService.getAllCustomers();
+        return customerService.getAllCustomers(authorization);
     }
 
     @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDTO getExactCustomer(@PathVariable String id){
+    public ShowCustomerDTO getExactCustomer(@PathVariable String id, @RequestHeader String authorization){
         logger.info("Getting a customer");
-        return customerService.getExactCustomer(id);
+        return customerService.getExactCustomer(id, authorization);
     }
 }

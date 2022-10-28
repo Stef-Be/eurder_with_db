@@ -1,4 +1,4 @@
-package com.switchfully.eurder.api.dto;
+package com.switchfully.eurder.api.dto.order;
 
 import java.util.List;
 public class PrintOrderDTO {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.EOFException;
 import java.io.IOException;
 
 import static org.springframework.http.HttpStatus.*;
@@ -24,13 +25,13 @@ public class EurderExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UnauthorizatedException.class)
-    protected void courseID(UnauthorizatedException ex, HttpServletResponse response) throws IOException {
+    protected void handleUnauthorizedException(UnauthorizatedException ex, HttpServletResponse response) throws IOException {
         logger.error(ex.getMessage());
         response.sendError(FORBIDDEN.value(), ex.getMessage());
     }
 
     @ExceptionHandler(WrongPasswordException.class)
-    protected void courseID(WrongPasswordException ex, HttpServletResponse response) throws IOException {
+    protected void handleWrongPasswordException(WrongPasswordException ex, HttpServletResponse response) throws IOException {
         logger.error(ex.getMessage());
         response.sendError(UNAUTHORIZED.value(), ex.getMessage());
     }

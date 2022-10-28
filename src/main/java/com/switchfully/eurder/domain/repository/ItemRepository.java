@@ -21,8 +21,8 @@ public class ItemRepository {
         items.put(itemToAdd.getId(), itemToAdd);
     }
 
-    public LocalDate calculateShippingDate(String itemId) {
-        if (isInStock(itemId)) return LocalDate.now().plusDays(1);
+    public LocalDate calculateShippingDate(String itemId, int amount) {
+        if (isInStock(itemId, amount)) return LocalDate.now().plusDays(1);
         return LocalDate.now().plusDays(7);
     }
 
@@ -36,8 +36,8 @@ public class ItemRepository {
 
     public Item getItem(String id){return items.get(id);}
 
-    private boolean isInStock(String itemId) {
-        return items.get(itemId).getAmount() > 0;
+    private boolean isInStock(String itemId, int amount) {
+        return items.get(itemId).getAmount() > amount;
     }
 
     private void setupDataBase(){

@@ -1,6 +1,4 @@
-package com.switchfully.eurder.api.dto;
-
-import org.springframework.cglib.core.Local;
+package com.switchfully.eurder.api.dto.order;
 
 import java.time.LocalDate;
 

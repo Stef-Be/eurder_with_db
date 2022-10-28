@@ -1,7 +1,7 @@
 package com.switchfully.eurder.service;
 
-import com.switchfully.eurder.api.dto.AddItemDTO;
-import com.switchfully.eurder.api.dto.PrintItemDTO;
+import com.switchfully.eurder.api.dto.item.AddItemDTO;
+import com.switchfully.eurder.api.dto.item.PrintItemDTO;
 import com.switchfully.eurder.api.mapper.ItemMapper;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.repository.ItemRepository;
@@ -32,6 +32,7 @@ public class ItemService {
     public void addNewItem(String authorization, AddItemDTO newItem) {
         securityService.validateAuthorization(authorization, ADD_ITEM);
         validationService.validateNoEmptyFields(newItem);
+        validationService.checkIfItemIsAlreadyInRepo(newItem);
         itemRepository.addNewItem(itemMapper.mapToItem(newItem));
     }
 

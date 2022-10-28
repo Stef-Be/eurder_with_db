@@ -1,6 +1,6 @@
 package com.switchfully.eurder.domain.repository;
 
-import com.switchfully.eurder.api.dto.AddOrderDTO;
+import com.switchfully.eurder.api.dto.order.AddOrderDTO;
 import com.switchfully.eurder.domain.order.Order;
 import com.switchfully.eurder.domain.user.Customer;
 import org.springframework.stereotype.Component;
