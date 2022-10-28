@@ -9,7 +9,6 @@ import com.switchfully.eurder.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,8 +45,9 @@ public class ItemController {
 
     @GetMapping(produces =  APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public List<PrintItemDTO> getItems(){
-        return itemService.getAllItems();
+    public List<PrintItemDTO> getItems(@RequestHeader (required = false) String authorization){
+        logger.info("Showing all items");
+        return itemService.getAllItems(authorization);
     }
 
 

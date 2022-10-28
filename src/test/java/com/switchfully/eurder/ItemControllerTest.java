@@ -1,11 +1,9 @@
 package com.switchfully.eurder;
 
-import com.switchfully.eurder.api.dto.PrintItemDTO;
 import com.switchfully.eurder.api.dto.PrintOrderDTO;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.repository.ItemRepository;
 import com.switchfully.eurder.domain.user.Customer;
-import com.switchfully.eurder.domain.user.Role;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
@@ -142,5 +140,23 @@ class ItemControllerTest {
                 .extract();
     }
 
-
+    @Test
+    void getAllItemsHappyPath(){
+        given()
+                .baseUri("http://localhost")
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic("admin@eurder.com", "password")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .when()
+                .get("/items")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract();
+    }
 }

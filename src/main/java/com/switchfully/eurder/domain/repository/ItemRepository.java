@@ -1,9 +1,6 @@
 package com.switchfully.eurder.domain.repository;
 
-import com.switchfully.eurder.api.dto.AddOrderDTO;
 import com.switchfully.eurder.domain.item.Item;
-import com.switchfully.eurder.domain.user.Customer;
-import com.switchfully.eurder.domain.user.Role;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

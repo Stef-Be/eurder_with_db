@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.switchfully.eurder.domain.user.Feature.ADD_ITEM;
+import static com.switchfully.eurder.domain.user.Feature.VIEW_ITEMS;
 
 @Service
 public class ItemService {
@@ -34,7 +35,8 @@ public class ItemService {
         itemRepository.addNewItem(itemMapper.mapToItem(newItem));
     }
 
-    public List<PrintItemDTO> getAllItems() {
+    public List<PrintItemDTO> getAllItems(String authorization) {
+        securityService.validateAuthorization(authorization, VIEW_ITEMS);
         List<Item> foundItems = itemRepository.getItems();
 
         return foundItems.stream().map(item -> itemMapper.mapToItemToPrint(item)).collect(Collectors.toList());

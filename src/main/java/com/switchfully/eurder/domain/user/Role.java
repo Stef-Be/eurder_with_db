@@ -3,11 +3,10 @@ package com.switchfully.eurder.domain.user;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.switchfully.eurder.domain.user.Feature.ADD_ITEM;
-import static com.switchfully.eurder.domain.user.Feature.ORDER_ITEMS;
+import static com.switchfully.eurder.domain.user.Feature.*;
 
 public enum Role {
-    ADMIN(newArrayList(ADD_ITEM)), CUSTOMER(newArrayList(ORDER_ITEMS));
+    ADMIN(newArrayList(ADD_ITEM, VIEW_ITEMS)), CUSTOMER(newArrayList(ORDER_ITEMS));
 
     private List<Feature> featureList;
 
