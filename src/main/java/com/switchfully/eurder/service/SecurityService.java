@@ -37,7 +37,10 @@ public class SecurityService {
             logger.error("User " + customer.getFirstName() + " " + customer.getLastName() + " does not have access to " + feature);
             throw new UnauthorizatedException();
         }
+    }
 
+    public String getEmail(String auth){
+        return getUsernamePassword(auth).getUsername();
     }
 
     private UsernamePassword getUsernamePassword(String authorization) {

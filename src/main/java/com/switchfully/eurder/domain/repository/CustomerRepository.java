@@ -36,6 +36,10 @@ public class CustomerRepository {
     private void setupDataBase(){
         Customer adminSteve = new Customer("Steve","The Chief","admin@eurder.com", "funstreet 100", "1207", "password");
         adminSteve.setRole(Role.ADMIN);
+
+        Customer justACustomer = new Customer("Normie", "McDonald","customer@eurder.com", "funstreet 100", "1207", "password");
+
         addNewCustomer(adminSteve);
+        addNewCustomer(justACustomer);
     }
 }
