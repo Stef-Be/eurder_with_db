@@ -1,6 +1,7 @@
 package com.switchfully.eurder.service;
 
 import com.switchfully.eurder.api.dto.item.AddItemDTO;
+import com.switchfully.eurder.api.dto.item.UpdatedItemDTO;
 import com.switchfully.eurder.api.dto.order.AddItemGroupDTO;
 import com.switchfully.eurder.api.dto.order.AddOrderDTO;
 import com.switchfully.eurder.api.dto.customer.CreateCustomerDTO;
@@ -37,6 +38,9 @@ public class ValidationService {
     public void validateNoEmptyFields(AddOrderDTO newOrder) {
         validateFieldsNotNull(newOrder);
     }
+    public void validateNoEmptyFields(UpdatedItemDTO updatedItem) {
+        validateFieldsNotNull(updatedItem);
+    }
 
     private void validateFieldsNotNull(CreateCustomerDTO newCustomerDTO) {
         validateFieldNotNull(newCustomerDTO.getFirstName(), "First name");
@@ -44,6 +48,13 @@ public class ValidationService {
         validateFieldNotNull(newCustomerDTO.getEmail(), "Email");
         validateFieldNotNull(newCustomerDTO.getAddress(), "Address");
         validateFieldNotNull(newCustomerDTO.getPhoneNumber(), "Phone number");
+    }
+
+    private void validateFieldsNotNull(UpdatedItemDTO updatedItem){
+        validateFieldNotNull(updatedItem.getName(), "Name ");
+        validateFieldNotNull(updatedItem.getDescription(), "Description");
+        validateFieldNotZero(updatedItem.getAmount());
+        validateFieldNotZero(updatedItem.getPrice());
     }
 
     private void validateFieldsNotNull(AddItemGroupDTO newItemOrder){

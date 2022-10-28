@@ -2,6 +2,7 @@ package com.switchfully.eurder.service;
 
 import com.switchfully.eurder.api.dto.item.AddItemDTO;
 import com.switchfully.eurder.api.dto.item.PrintItemDTO;
+import com.switchfully.eurder.api.dto.item.UpdatedItemDTO;
 import com.switchfully.eurder.api.mapper.ItemMapper;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.repository.ItemRepository;
@@ -10,8 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.switchfully.eurder.domain.user.Feature.ADD_ITEM;
-import static com.switchfully.eurder.domain.user.Feature.VIEW_ITEMS;
+import static com.switchfully.eurder.domain.user.Feature.*;
 
 @Service
 public class ItemService {
@@ -30,16 +30,23 @@ public class ItemService {
     }
 
     public void addNewItem(String authorization, AddItemDTO newItem) {
-        securityService.validateAuthorization(authorization, ADD_ITEM);
+        securityService.validateAuthorization(authorization, CRUD_ITEMS);
         validationService.validateNoEmptyFields(newItem);
         validationService.checkIfItemIsAlreadyInRepo(newItem);
         itemRepository.addNewItem(itemMapper.mapToItem(newItem));
     }
 
     public List<PrintItemDTO> getAllItems(String authorization) {
-        securityService.validateAuthorization(authorization, VIEW_ITEMS);
+        securityService.validateAuthorization(authorization, CRUD_ITEMS);
         List<Item> foundItems = itemRepository.getItems();
 
         return foundItems.stream().map(item -> itemMapper.mapToItemToPrint(item)).collect(Collectors.toList());
+    }
+
+
+    public void updateItem(UpdatedItemDTO updatedItem, String authorization, String id) {
+        securityService.validateAuthorization(authorization,CRUD_ITEMS);
+        validationService.validateNoEmptyFields(updatedItem);
+        itemRepository.updateItem(id, itemMapper.mapToItem(updatedItem));
     }
 }

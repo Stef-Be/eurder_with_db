@@ -6,7 +6,7 @@ import static com.google.common.collect.Lists.newArrayList;
 import static com.switchfully.eurder.domain.user.Feature.*;
 
 public enum Role {
-    ADMIN(newArrayList(ADD_ITEM, VIEW_ITEMS, VIEW_CUSTOMERS)), CUSTOMER(newArrayList(ORDER_ITEMS));
+    ADMIN(newArrayList(CRUD_ITEMS, VIEW_CUSTOMERS)), CUSTOMER(newArrayList(ORDER_ITEMS));
 
     private List<Feature> featureList;
 

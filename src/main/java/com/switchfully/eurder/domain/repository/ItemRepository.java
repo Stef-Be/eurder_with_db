@@ -40,10 +40,18 @@ public class ItemRepository {
         return items.get(itemId).getAmount() > amount;
     }
 
+    public Item getItemByName(String name){
+        return items.values().stream().filter(item->item.getName().equals(name)).findFirst().orElseThrow();
+    }
+
     private void setupDataBase(){
         Item screw = new Item("Screw", "Something to fix wood to stuff with", 0.5, 10);
         Item wood = new Item("Wood", "Something that can be fixed to other stuff by screws", 100, 2);
         addNewItem(screw);
         addNewItem(wood);
+    }
+
+    public void updateItem(String id, Item updatedItem) {
+        items.put(id, updatedItem);
     }
 }

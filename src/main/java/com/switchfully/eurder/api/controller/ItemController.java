@@ -2,6 +2,7 @@ package com.switchfully.eurder.api.controller;
 
 import com.switchfully.eurder.api.dto.item.AddItemDTO;
 import com.switchfully.eurder.api.dto.item.PrintItemDTO;
+import com.switchfully.eurder.api.dto.item.UpdatedItemDTO;
 import com.switchfully.eurder.service.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,13 @@ public class ItemController {
     public void addNewItem(@RequestHeader (required = false) String authorization, @RequestBody AddItemDTO newItem){
         logger.info("Adding new item");
         itemService.addNewItem(authorization, newItem);
+    }
+
+    @PutMapping(path="{id}",consumes =  APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void updateItem(@RequestHeader(required = false) String authorization, @RequestBody UpdatedItemDTO updatedItem, @PathVariable String id){
+        logger.info("Updating item");
+        itemService.updateItem(updatedItem, authorization, id);
     }
 
     @GetMapping(produces =  APPLICATION_JSON_VALUE)
