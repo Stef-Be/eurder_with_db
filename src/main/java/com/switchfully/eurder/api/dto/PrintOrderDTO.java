@@ -5,12 +5,17 @@ public class PrintOrderDTO {
     private List<PrintItemGroupDTO> printItemGroupDTO;
     private String finalPrice;
 
-    public PrintOrderDTO(List<PrintItemGroupDTO> printItemGroupDTO, String finalPrice) {
+    public PrintOrderDTO setPrintItemGroupDTO(List<PrintItemGroupDTO> printItemGroupDTO){
         this.printItemGroupDTO = printItemGroupDTO;
-        this.finalPrice = finalPrice;
+        return this;
     }
 
-    public List<PrintItemGroupDTO> getPrintItemGroupDTOS() {
+    public PrintOrderDTO setFinalPrice(String finalPrice){
+        this.finalPrice = finalPrice;
+        return this;
+    }
+
+    public List<PrintItemGroupDTO> getPrintItemGroupDTO() {
         return printItemGroupDTO;
     }
 

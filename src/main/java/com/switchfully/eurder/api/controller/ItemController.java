@@ -2,6 +2,7 @@ package com.switchfully.eurder.api.controller;
 
 import com.switchfully.eurder.api.dto.AddItemDTO;
 import com.switchfully.eurder.api.dto.AddOrderDTO;
+import com.switchfully.eurder.api.dto.PrintItemDTO;
 import com.switchfully.eurder.api.dto.PrintOrderDTO;
 import com.switchfully.eurder.service.ItemService;
 import com.switchfully.eurder.service.OrderService;
@@ -10,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.*;
 
@@ -39,6 +42,12 @@ public class ItemController {
     public PrintOrderDTO addNewOrder(@RequestHeader (required = false) String authorization, @RequestBody AddOrderDTO newOrder){
         logger.info("Adding new order");
         return orderService.addNewOrder(authorization, newOrder);
+    }
+
+    @GetMapping(produces =  APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<PrintItemDTO> getItems(){
+        return itemService.getAllItems();
     }
 
 

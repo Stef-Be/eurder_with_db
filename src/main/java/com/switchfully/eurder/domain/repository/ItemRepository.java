@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -32,6 +33,12 @@ public class ItemRepository {
         return items.get(itemId).getPrice();
     }
 
+    public List<Item> getItems() {
+        return items.values().stream().toList();
+    }
+
+    public Item getItem(String id){return items.get(id);}
+
     private boolean isInStock(String itemId) {
         return items.get(itemId).getAmount() > 0;
     }
@@ -41,7 +48,5 @@ public class ItemRepository {
         Item wood = new Item("Wood", "Something that can be fixed to other stuff by screws", 100, 2);
         addNewItem(screw);
         addNewItem(wood);
-        System.out.println(screw.getId());
-        System.out.println(wood.getId());
     }
 }

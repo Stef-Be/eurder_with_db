@@ -32,6 +32,6 @@ public class OrderService {
         securityService.validateAuthorization(authorization, ORDER_ITEMS);
         Customer orderingCustomer = customerRepository.getCustomerbyEmail(securityService.getEmail(authorization));
         orderRepository.addNewOrder(orderingCustomer, orderMapper.mapToOrder(newOrder));
-        return new PrintOrderDTO(orderMapper.mapAddToPrintItemGroupDTO(newOrder.getItemGroupDTOList()), "Final price: " + orderRepository.calculateFinalPrice(newOrder));
+        return new PrintOrderDTO().setPrintItemGroupDTO(orderMapper.mapAddToPrintItemGroupDTO(newOrder.getItemGroupDTOList())).setFinalPrice(("Final price: " + orderRepository.calculateFinalPrice(newOrder)));
     }
 }
