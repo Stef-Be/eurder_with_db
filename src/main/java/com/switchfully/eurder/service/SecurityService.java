@@ -27,7 +27,7 @@ public class SecurityService {
             throw new UnauthorizatedException();
         }
         UsernamePassword usernamePassword = getUsernamePassword(authorization);
-        Customer customer = customerRepository.getCustomerbyEmail(usernamePassword.getUsername());
+        Customer customer = customerRepository.getCustomerbyEmail(getEmail(authorization));
 
         if(!customer.doesPasswordMatch(usernamePassword.getPassword())) {
             logger.error("Password does not match for user " + usernamePassword.getUsername());

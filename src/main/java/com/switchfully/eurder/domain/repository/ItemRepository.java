@@ -37,8 +37,11 @@ public class ItemRepository {
     }
 
     private void setupDataBase(){
-        Item testItem = new Item("Screw", "Something to fix stuff with", 0.5, 10);
-        addNewItem(testItem);
-        System.out.println(testItem.getId());
+        Item screw = new Item("Screw", "Something to fix wood to stuff with", 0.5, 10);
+        Item wood = new Item("Wood", "Something that can be fixed to other stuff by screws", 100, 2);
+        addNewItem(screw);
+        addNewItem(wood);
+        System.out.println(screw.getId());
+        System.out.println(wood.getId());
     }
 }

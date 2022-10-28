@@ -2,6 +2,7 @@ package com.switchfully.eurder.api.controller;
 
 import com.switchfully.eurder.api.dto.AddItemDTO;
 import com.switchfully.eurder.api.dto.AddOrderDTO;
+import com.switchfully.eurder.api.dto.PrintOrderDTO;
 import com.switchfully.eurder.service.ItemService;
 import com.switchfully.eurder.service.OrderService;
 import org.slf4j.Logger;
@@ -35,9 +36,9 @@ public class ItemController {
 
     @PostMapping(path = "order", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void addNewOrder(@RequestHeader (required = false) String authorization, @RequestBody AddOrderDTO newOrder){
+    public PrintOrderDTO addNewOrder(@RequestHeader (required = false) String authorization, @RequestBody AddOrderDTO newOrder){
         logger.info("Adding new order");
-        orderService.addNewOrder(authorization, newOrder);
+        return orderService.addNewOrder(authorization, newOrder);
     }
 
 

@@ -25,6 +25,7 @@ public class OrderRepository {
     }
 
     public double calculateFinalPrice(AddOrderDTO newOrder) {
-        return newOrder.getItemGroupDTOList().stream().mapToDouble(itemGroupDTO -> itemRepository.getItemPrice(itemGroupDTO.getItemId())).sum();
+        return newOrder.getItemGroupDTOList().stream().mapToDouble(itemGroupDTO -> itemGroupDTO.getAmount() * itemRepository.getItemPrice(itemGroupDTO.getItemId())).sum();
+
     }
 }
