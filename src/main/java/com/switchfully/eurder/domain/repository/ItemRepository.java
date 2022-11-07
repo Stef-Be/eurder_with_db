@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 @Component
 public class ItemRepository {
     private Map<String, Item> items;
@@ -53,5 +54,9 @@ public class ItemRepository {
 
     public void updateItem(String id, Item updatedItem) {
         items.put(id, updatedItem);
+    }
+
+    public boolean itemIsInStock(String itemId, int orderAmount) {
+        return items.get(itemId).getAmount() >= orderAmount;
     }
 }

@@ -32,8 +32,6 @@ public class OrderService {
         validationService.validateNoEmptyFields(newOrder);
         Customer orderingCustomer = customerRepository.getCustomerbyEmail(securityService.getEmail(authorization));
 
-
-
         orderRepository.addNewOrder(orderingCustomer, orderMapper.mapToOrder(newOrder));
 
         return new PrintOrderDTO().setPrintItemGroupDTO(orderMapper.mapAddToPrintItemGroupDTO(newOrder.getItemGroupDTOList())).setFinalPrice(("Final price: " + orderRepository.calculateFinalPrice(newOrder)));

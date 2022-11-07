@@ -4,16 +4,16 @@ import java.util.List;
 import java.util.UUID;
 
 public class Order {
-    private final List<ItemGroup> items;
+    private final List<ItemGroup> itemGroups;
     private final String customerId;
 
     public Order(List<ItemGroup> items) {
         this.customerId = UUID.randomUUID().toString();
-        this.items = items;
+        this.itemGroups = items;
     }
 
-    public List<ItemGroup> getItems() {
-        return items;
+    public List<ItemGroup> getItemGroups() {
+        return itemGroups;
     }
 
     public String getCustomerId() {

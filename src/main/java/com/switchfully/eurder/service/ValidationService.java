@@ -7,7 +7,6 @@ import com.switchfully.eurder.api.dto.order.AddOrderDTO;
 import com.switchfully.eurder.api.dto.customer.CreateCustomerDTO;
 import com.switchfully.eurder.api.mapper.CustomerMapper;
 import com.switchfully.eurder.api.mapper.ItemMapper;
-import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.repository.ItemRepository;
 import com.switchfully.eurder.domain.user.Customer;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
