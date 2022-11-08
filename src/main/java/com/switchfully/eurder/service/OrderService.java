@@ -6,6 +6,7 @@ import com.switchfully.eurder.api.mapper.OrderMapper;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.repository.OrderRepository;
 import com.switchfully.eurder.domain.user.Customer;
+import com.switchfully.eurder.service.validation.OrderValidationService;
 import org.springframework.stereotype.Service;
 
 import static com.switchfully.eurder.domain.user.Feature.ORDER_ITEMS;
@@ -17,19 +18,19 @@ public class OrderService {
     private final CustomerRepository customerRepository;
     private final SecurityService securityService;
 
-    private final ValidationService validationService;
+    private final OrderValidationService orderValidationService;
 
-    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, CustomerRepository customerRepository, SecurityService securityService, ValidationService validationService) {
+    public OrderService(OrderRepository orderRepository, OrderMapper orderMapper, CustomerRepository customerRepository, SecurityService securityService, OrderValidationService orderValidationService) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.customerRepository = customerRepository;
         this.securityService = securityService;
-        this.validationService = validationService;
+        this.orderValidationService = orderValidationService;
     }
 
     public PrintOrderDTO addNewOrder(String authorization, AddOrderDTO newOrder) {
         securityService.validateAuthorization(authorization, ORDER_ITEMS);
-        validationService.validateNoEmptyFields(newOrder);
+        orderValidationService.validateNoEmptyFields(newOrder);
         Customer orderingCustomer = customerRepository.getCustomerbyEmail(securityService.getEmail(authorization));
 
         orderRepository.addNewOrder(orderingCustomer, orderMapper.mapToOrder(newOrder));

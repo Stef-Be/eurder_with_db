@@ -6,6 +6,7 @@ import com.switchfully.eurder.api.dto.item.UpdatedItemDTO;
 import com.switchfully.eurder.api.mapper.ItemMapper;
 import com.switchfully.eurder.domain.item.Item;
 import com.switchfully.eurder.domain.repository.ItemRepository;
+import com.switchfully.eurder.service.validation.ItemValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,21 +19,21 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
-    private final ValidationService validationService;
+    private final ItemValidationService itemValidationService;
 
     private final SecurityService securityService;
 
-    public ItemService(ItemRepository itemRepository, ItemMapper itemMapper, ValidationService validationService, SecurityService securityService) {
+    public ItemService(ItemRepository itemRepository, ItemMapper itemMapper, ItemValidationService itemValidationService, SecurityService securityService) {
         this.itemRepository = itemRepository;
         this.itemMapper = itemMapper;
-        this.validationService = validationService;
+        this.itemValidationService = itemValidationService;
         this.securityService = securityService;
     }
 
     public void addNewItem(String authorization, AddItemDTO newItem) {
         securityService.validateAuthorization(authorization, CRUD_ITEMS);
-        validationService.validateNoEmptyFields(newItem);
-        validationService.checkIfItemIsAlreadyInRepo(newItem);
+        itemValidationService.validateNoEmptyFields(newItem);
+        itemValidationService.checkIfItemIsAlreadyInRepo(newItem);
         itemRepository.addNewItem(itemMapper.mapToItem(newItem));
     }
 
@@ -46,7 +47,7 @@ public class ItemService {
 
     public void updateItem(UpdatedItemDTO updatedItem, String authorization, String id) {
         securityService.validateAuthorization(authorization,CRUD_ITEMS);
-        validationService.validateNoEmptyFields(updatedItem);
+        itemValidationService.validateNoEmptyFields(updatedItem);
         itemRepository.updateItem(id, itemMapper.mapToItem(updatedItem));
     }
 }

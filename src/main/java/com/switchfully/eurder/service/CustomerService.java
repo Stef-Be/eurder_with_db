@@ -4,6 +4,7 @@ import com.switchfully.eurder.api.dto.customer.CreateCustomerDTO;
 import com.switchfully.eurder.api.dto.customer.ShowCustomerDTO;
 import com.switchfully.eurder.api.mapper.CustomerMapper;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
+import com.switchfully.eurder.service.validation.CustomerValidationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,19 +17,19 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
-    private final ValidationService validationService;
+    private final CustomerValidationService customerValidationService;
     private final SecurityService securityService;
 
-    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper, ValidationService validationService, SecurityService securityService) {
+    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper, CustomerValidationService customerValidationService, SecurityService securityService) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
-        this.validationService = validationService;
+        this.customerValidationService = customerValidationService;
         this.securityService = securityService;
     }
 
     public void registerNewCustomer(CreateCustomerDTO newCustomerDTO) {
-        validationService.validateNoEmptyFields(newCustomerDTO);
-        validationService.checkIfUserIsAlreadyCustomer(newCustomerDTO);
+        customerValidationService.validateNoEmptyFields(newCustomerDTO);
+        customerValidationService.checkIfUserIsAlreadyCustomer(newCustomerDTO);
         customerRepository.addNewCustomer(customerMapper.mapToCreatedCustomer(newCustomerDTO));
     }
 
