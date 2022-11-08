@@ -1,7 +1,6 @@
 package com.switchfully.eurder;
 
 import com.switchfully.eurder.domain.repository.ItemRepository;
-import com.switchfully.eurder.domain.user.Customer;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;

@@ -41,7 +41,7 @@ public class ItemService {
         securityService.validateAuthorization(authorization, CRUD_ITEMS);
         List<Item> foundItems = itemRepository.getItems();
 
-        return foundItems.stream().map(item -> itemMapper.mapToItemToPrint(item)).collect(Collectors.toList());
+        return foundItems.stream().map(itemMapper::mapToItemToPrint).collect(Collectors.toList());
     }
 
 

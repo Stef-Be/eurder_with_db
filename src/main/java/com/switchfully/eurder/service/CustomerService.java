@@ -37,7 +37,7 @@ public class CustomerService {
         securityService.validateAuthorization(authorization, VIEW_CUSTOMERS);
         return customerRepository.getAllCustomers()
                 .stream()
-                .map(customer -> customerMapper.mapToShowDTO(customer))
+                .map(customerMapper::mapToShowDTO)
                 .collect(Collectors.toList());
     }
 

@@ -35,6 +35,10 @@ public class OrderService {
 
         orderRepository.addNewOrder(orderingCustomer, orderMapper.mapToOrder(newOrder));
 
+        return getPrintOrderDTO(newOrder);
+    }
+
+    private PrintOrderDTO getPrintOrderDTO(AddOrderDTO newOrder) {
         return new PrintOrderDTO().setPrintItemGroupDTO(orderMapper.mapAddToPrintItemGroupDTO(newOrder.getItemGroupDTOList())).setFinalPrice(("Final price: " + orderRepository.calculateFinalPrice(newOrder)));
     }
 }
