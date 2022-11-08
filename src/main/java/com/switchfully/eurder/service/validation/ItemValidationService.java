@@ -4,6 +4,7 @@ import com.switchfully.eurder.service.dto.item.AddItemDTO;
 import com.switchfully.eurder.service.dto.item.UpdatedItemDTO;
 import com.switchfully.eurder.api.mapper.ItemMapper;
 import com.switchfully.eurder.domain.repository.ItemRepository;
+import com.switchfully.eurder.service.dto.item.Validatable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,17 +25,11 @@ public class ItemValidationService extends ValidationService {
         validateFieldsNotNull(updatedItem);
     }
 
-    private void validateFieldsNotNull(UpdatedItemDTO updatedItem){
-        validateFieldNotNull(updatedItem.getName(), "Name ");
-        validateFieldNotNull(updatedItem.getDescription(), "Description");
-        validateFieldNotZero(updatedItem.getAmount());
-        validateFieldNotZero(updatedItem.getPrice());
-    }
-    private void validateFieldsNotNull(AddItemDTO newItem) {
-        validateFieldNotNull(newItem.getName(), "Name");
-        validateFieldNotNull(newItem.getDescription(), "Description");
-        validateFieldNotZero(newItem.getPrice());
-        validateFieldNotZero(newItem.getAmount());
+    private void validateFieldsNotNull(Validatable validatable){
+        validateFieldNotNull(validatable.getName(), "Name ");
+        validateFieldNotNull(validatable.getDescription(), "Description");
+        validateFieldNotZero(validatable.getPrice());
+        validateFieldNotZero(validatable.getAmount());
     }
 
     public void checkIfItemIsAlreadyInRepo(AddItemDTO newItem) {

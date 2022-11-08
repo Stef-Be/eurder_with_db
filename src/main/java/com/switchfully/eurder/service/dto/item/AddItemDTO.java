@@ -1,6 +1,6 @@
 package com.switchfully.eurder.service.dto.item;
 
-public class AddItemDTO {
+public class AddItemDTO implements Validatable{
     private String name;
     private String description;
     private double price;
