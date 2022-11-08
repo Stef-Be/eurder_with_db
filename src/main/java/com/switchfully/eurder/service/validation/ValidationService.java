@@ -1,4 +1,4 @@
-package com.switchfully.eurder.service;
+package com.switchfully.eurder.service.validation;
 
 
 import com.switchfully.eurder.api.dto.order.AddItemGroupDTO;
@@ -6,7 +6,7 @@ import com.switchfully.eurder.api.dto.order.AddOrderDTO;
 
 import org.springframework.stereotype.Service;
 @Service
-public class ValidationService {
+public abstract class ValidationService {
     protected void validateFieldNotNull(String value, String field) {
         if (value == null || value.isBlank()) throw new IllegalArgumentException(field + " can not be empty!");
     }

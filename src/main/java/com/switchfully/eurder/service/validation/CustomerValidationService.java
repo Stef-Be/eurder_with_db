@@ -4,7 +4,6 @@ import com.switchfully.eurder.api.dto.customer.CreateCustomerDTO;
 import com.switchfully.eurder.api.mapper.CustomerMapper;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.user.Customer;
-import com.switchfully.eurder.service.ValidationService;
 import org.springframework.stereotype.Service;
 
 @Service

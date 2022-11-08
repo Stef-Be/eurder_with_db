@@ -1,8 +1,5 @@
 package com.switchfully.eurder.domain.order;
 
-import com.switchfully.eurder.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.time.LocalDate;
 
 public class ItemGroup {
