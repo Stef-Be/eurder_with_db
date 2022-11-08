@@ -1,7 +1,7 @@
 package com.switchfully.eurder.service;
 
-import com.switchfully.eurder.api.dto.order.AddOrderDTO;
-import com.switchfully.eurder.api.dto.order.PrintOrderDTO;
+import com.switchfully.eurder.service.dto.order.AddOrderDTO;
+import com.switchfully.eurder.service.dto.order.PrintOrderDTO;
 import com.switchfully.eurder.api.mapper.OrderMapper;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.repository.OrderRepository;

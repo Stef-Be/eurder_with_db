@@ -1,7 +1,7 @@
 package com.switchfully.eurder.service.validation;
 
-import com.switchfully.eurder.api.dto.item.AddItemDTO;
-import com.switchfully.eurder.api.dto.item.UpdatedItemDTO;
+import com.switchfully.eurder.service.dto.item.AddItemDTO;
+import com.switchfully.eurder.service.dto.item.UpdatedItemDTO;
 import com.switchfully.eurder.api.mapper.ItemMapper;
 import com.switchfully.eurder.domain.repository.ItemRepository;
 import org.springframework.stereotype.Service;

@@ -38,7 +38,7 @@ public class ItemRepository {
     public Item getItem(String id){return items.get(id);}
 
     private boolean isInStock(String itemId, int amount) {
-        return items.get(itemId).getAmount() > amount;
+        return items.get(itemId).getAmount() >= amount;
     }
 
     private void setupDataBase(){

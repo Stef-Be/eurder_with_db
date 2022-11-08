@@ -1,32 +1,25 @@
-package com.switchfully.eurder.api.dto.item;
+package com.switchfully.eurder.service.dto.item;
 
-public class PrintItemDTO {
-
-    private String id;
+public class AddItemDTO {
     private String name;
     private String description;
     private double price;
     private int amount;
 
-    public PrintItemDTO setID(String id){
-        this.id = id;
-        return this;
-    }
-
-    public PrintItemDTO setName(String name){
+    public AddItemDTO setName(String name){
         this.name = name;
         return this;
     }
-    public PrintItemDTO setDescription(String description){
+    public AddItemDTO setDescription(String description){
         this.description = description;
         return this;
     }
-    public PrintItemDTO setPrice(double price){
+    public AddItemDTO setPrice(double price){
         this.price = price;
         return this;
     }
 
-    public PrintItemDTO setAmount(int amount){
+    public AddItemDTO setAmount(int amount){
         this.amount = amount;
         return this;
     }
@@ -45,9 +38,5 @@ public class PrintItemDTO {
 
     public int getAmount() {
         return amount;
-    }
-
-    public String getId() {
-        return id;
     }
 }

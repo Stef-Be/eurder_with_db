@@ -1,6 +1,6 @@
 package com.switchfully.eurder;
 
-import com.switchfully.eurder.api.dto.order.PrintOrderDTO;
+import com.switchfully.eurder.service.dto.order.PrintOrderDTO;
 import com.switchfully.eurder.domain.repository.ItemRepository;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Assertions;

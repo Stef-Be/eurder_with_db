@@ -1,7 +1,7 @@
 package com.switchfully.eurder.api.controller;
 
-import com.switchfully.eurder.api.dto.customer.CreateCustomerDTO;
-import com.switchfully.eurder.api.dto.customer.ShowCustomerDTO;
+import com.switchfully.eurder.service.dto.customer.CreateCustomerDTO;
+import com.switchfully.eurder.service.dto.customer.ShowCustomerDTO;
 import com.switchfully.eurder.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

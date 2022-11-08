@@ -1,9 +1,6 @@
 package com.switchfully.eurder.service.validation;
 
 
-import com.switchfully.eurder.api.dto.order.AddItemGroupDTO;
-import com.switchfully.eurder.api.dto.order.AddOrderDTO;
-
 import org.springframework.stereotype.Service;
 @Service
 public abstract class ValidationService {

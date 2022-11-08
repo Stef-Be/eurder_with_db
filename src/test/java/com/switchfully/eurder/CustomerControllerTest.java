@@ -1,6 +1,6 @@
 package com.switchfully.eurder;
 
-import com.switchfully.eurder.api.dto.customer.ShowCustomerDTO;
+import com.switchfully.eurder.service.dto.customer.ShowCustomerDTO;
 import com.switchfully.eurder.api.mapper.CustomerMapper;
 import com.switchfully.eurder.domain.user.Customer;
 import com.switchfully.eurder.domain.repository.CustomerRepository;

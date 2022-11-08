@@ -1,8 +1,8 @@
 package com.switchfully.eurder.api.mapper;
 
-import com.switchfully.eurder.api.dto.order.AddItemGroupDTO;
-import com.switchfully.eurder.api.dto.order.AddOrderDTO;
-import com.switchfully.eurder.api.dto.order.PrintItemGroupDTO;
+import com.switchfully.eurder.service.dto.order.AddItemGroupDTO;
+import com.switchfully.eurder.service.dto.order.AddOrderDTO;
+import com.switchfully.eurder.service.dto.order.PrintItemGroupDTO;
 import com.switchfully.eurder.domain.order.ItemGroup;
 import com.switchfully.eurder.domain.order.Order;
 import com.switchfully.eurder.domain.repository.ItemRepository;

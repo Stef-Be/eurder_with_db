@@ -1,4 +1,4 @@
-package com.switchfully.eurder.api.dto.order;
+package com.switchfully.eurder.service.dto.order;
 
 import java.util.List;
 

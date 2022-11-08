@@ -1,7 +1,7 @@
 package com.switchfully.eurder.api.mapper;
 
-import com.switchfully.eurder.api.dto.customer.CreateCustomerDTO;
-import com.switchfully.eurder.api.dto.customer.ShowCustomerDTO;
+import com.switchfully.eurder.service.dto.customer.CreateCustomerDTO;
+import com.switchfully.eurder.service.dto.customer.ShowCustomerDTO;
 import com.switchfully.eurder.domain.user.Customer;
 import org.springframework.stereotype.Component;
 

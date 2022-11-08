@@ -1,8 +1,8 @@
 package com.switchfully.eurder.api.controller;
 
-import com.switchfully.eurder.api.dto.item.AddItemDTO;
-import com.switchfully.eurder.api.dto.item.PrintItemDTO;
-import com.switchfully.eurder.api.dto.item.UpdatedItemDTO;
+import com.switchfully.eurder.service.dto.item.AddItemDTO;
+import com.switchfully.eurder.service.dto.item.PrintItemDTO;
+import com.switchfully.eurder.service.dto.item.UpdatedItemDTO;
 import com.switchfully.eurder.service.ItemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
