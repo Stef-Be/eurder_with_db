@@ -9,12 +9,14 @@ import com.switchfully.eurder.domain.repository.ItemRepository;
 import com.switchfully.eurder.service.validation.ItemValidationService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.switchfully.eurder.domain.user.role.Feature.*;
 
 @Service
+@Transactional
 public class ItemService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
@@ -34,12 +36,12 @@ public class ItemService {
         securityService.validateAuthorization(authorization, CRUD_ITEMS);
         itemValidationService.validateNoEmptyFields(newItem);
         itemValidationService.checkIfItemIsAlreadyInRepo(newItem);
-        itemRepository.addNewItem(itemMapper.mapToItem(newItem));
+        itemRepository.save(itemMapper.mapToItem(newItem));
     }
 
     public List<PrintItemDTO> getAllItems(String authorization) {
         securityService.validateAuthorization(authorization, CRUD_ITEMS);
-        List<Item> foundItems = itemRepository.getItems();
+        List<Item> foundItems = itemRepository.findAll();
 
         return foundItems.stream().map(itemMapper::mapToItemToPrint).collect(Collectors.toList());
     }
@@ -47,6 +49,14 @@ public class ItemService {
     public void updateItem(UpdatedItemDTO updatedItem, String authorization, long id) {
         securityService.validateAuthorization(authorization,CRUD_ITEMS);
         itemValidationService.validateNoEmptyFields(updatedItem);
-        itemRepository.updateItem(id, itemMapper.mapToItem(updatedItem));
+
+        Item itemToUpdate = itemRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such item exists!"));
+
+        itemToUpdate.setName(updatedItem.getName());
+        itemToUpdate.setDescription(updatedItem.getDescription());
+        itemToUpdate.setAmount(updatedItem.getAmount());
+        itemToUpdate.setPrice(updatedItem.getPrice());
+
+        itemRepository.save(itemToUpdate);
     }
 }

@@ -33,7 +33,7 @@ public class ItemValidationService extends ValidationService {
     }
 
     public void checkIfItemIsAlreadyInRepo(AddItemDTO newItem) {
-        if(itemRepository.getItems().contains(itemMapper.mapToItem(newItem))){
+        if(itemRepository.findAll().contains(itemMapper.mapToItem(newItem))){
             throw new IllegalArgumentException("This item is already in the repository");
         }
     }

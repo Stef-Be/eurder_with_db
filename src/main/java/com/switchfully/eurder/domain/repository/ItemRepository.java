@@ -1,7 +1,11 @@
 package com.switchfully.eurder.domain.repository;
 
 import com.switchfully.eurder.domain.item.Item;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -9,46 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 
-@Component
-public class ItemRepository {
-    private Map<Long, Item> items;
+@Repository
+public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    public ItemRepository() {
-        this.items = new HashMap<>();
-        setupDataBase();
-    }
+    @Query("select i.price from Item i where i.id = :itemId")
+    double getItemPrice(@Param("itemId") long itemId);
 
-    public void addNewItem(Item itemToAdd) {
-        items.put(itemToAdd.getId(), itemToAdd);
-    }
-
-    public LocalDate calculateShippingDate(String itemId, int amount) {
-        if (isInStock(itemId, amount)) return LocalDate.now().plusDays(1);
-        return LocalDate.now().plusDays(7);
-    }
-
-    public double getItemPrice(String itemId){
-        return items.get(itemId).getPrice();
-    }
-
-    public List<Item> getItems() {
-        return items.values().stream().toList();
-    }
-
-    public Item getItem(long id){return items.get(id);}
-
-    private boolean isInStock(String itemId, int amount) {
-        return items.get(itemId).getAmount() >= amount;
-    }
-
-    private void setupDataBase(){
-        Item screw = new Item("Screw", "Something to fix wood to stuff with", 0.5, 10);
-        Item wood = new Item("Wood", "Something that can be fixed to other stuff by screws", 100, 2);
-        addNewItem(screw);
-        addNewItem(wood);
-    }
-
-    public void updateItem(long id, Item updatedItem) {
-        items.put(id, updatedItem);
-    }
 }

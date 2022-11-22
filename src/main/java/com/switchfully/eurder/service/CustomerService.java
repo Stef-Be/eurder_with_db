@@ -7,12 +7,15 @@ import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.service.validation.CustomerValidationService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.beans.Transient;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.switchfully.eurder.domain.user.role.Feature.VIEW_CUSTOMERS;
 
 @Service
+@Transactional
 public class CustomerService {
 
     private final CustomerRepository customerRepository;

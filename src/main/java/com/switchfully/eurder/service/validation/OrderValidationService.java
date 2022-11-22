@@ -11,7 +11,7 @@ public class OrderValidationService extends ValidationService {
     }
 
     private void validateFieldsNotNull(AddItemGroupDTO newItemOrder){
-        validateFieldNotNull(newItemOrder.getItemId(), "Item id ");
+        validateIdNotZero(newItemOrder.getItemId());
         validateFieldNotZero(newItemOrder.getAmount());
     }
 

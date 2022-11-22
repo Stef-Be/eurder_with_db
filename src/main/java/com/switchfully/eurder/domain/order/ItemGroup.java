@@ -3,11 +3,11 @@ package com.switchfully.eurder.domain.order;
 import java.time.LocalDate;
 
 public class ItemGroup {
-    private String itemId;
+    private long itemId;
     private int amount;
     private LocalDate shippingDate;
 
-    public ItemGroup(String itemId, int amount, LocalDate shippingDate) {
+    public ItemGroup(long itemId, int amount, LocalDate shippingDate) {
         this.itemId = itemId;
         this.amount = amount;
         this.shippingDate = shippingDate;
@@ -17,7 +17,7 @@ public class ItemGroup {
         this.shippingDate = shippingDate;
     }
 
-    public String getItemId() {
+    public long getItemId() {
         return itemId;
     }
 

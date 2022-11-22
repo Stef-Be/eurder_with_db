@@ -1,10 +1,10 @@
 package com.switchfully.eurder.service.dto.order;
 
 public class AddItemGroupDTO {
-    private String itemId;
+    private long itemId;
     private int amount;
 
-    public AddItemGroupDTO setItemId(String itemId){
+    public AddItemGroupDTO setItemId(long itemId){
         this.itemId = itemId;
         return this;
     }
@@ -15,7 +15,7 @@ public class AddItemGroupDTO {
     }
 
 
-    public String getItemId() {
+    public long getItemId() {
         return itemId;
     }
 

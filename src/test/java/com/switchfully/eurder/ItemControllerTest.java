@@ -1,6 +1,7 @@
 package com.switchfully.eurder;
 
 import com.switchfully.eurder.domain.repository.ItemRepository;
+import com.switchfully.eurder.service.dto.item.PrintItemDTO;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
@@ -13,10 +14,10 @@ import org.springframework.test.annotation.DirtiesContext;
 
 
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ItemControllerTest {
 
     @LocalServerPort
@@ -52,7 +53,7 @@ class ItemControllerTest {
                 .port(port)
                 .auth()
                 .preemptive()
-                .basic("admin@eurder.com", "password")
+                .basic("stef@switchfully.com", "admin")
                 .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .and()
@@ -63,6 +64,31 @@ class ItemControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract();
+
+        assertThat(itemRepository.findById(4L).isPresent());
+    }
+
+    @Test
+    public void addItem_asMember_unauthorized() {
+
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic("staf@switchfully.com", "customer1")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
+                .header("Content-type", "application/json")
+                .and()
+                .body(requestBody)
+                .when()
+                .post("/items")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .extract().response();
+
+        assertEquals("You do not have the authorization for this feature", response.jsonPath().getString("message"));
     }
 
     @Test
@@ -73,7 +99,7 @@ class ItemControllerTest {
                 .port(port)
                 .auth()
                 .preemptive()
-                .basic("admin@eurder.com", "password")
+                .basic("stef@switchfully.com", "admin")
                 .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .and()
@@ -90,12 +116,12 @@ class ItemControllerTest {
 
     @Test
     void getAllItemsHappyPath() {
-        given()
+        PrintItemDTO[] response = given()
                 .baseUri("http://localhost")
                 .port(port)
                 .auth()
                 .preemptive()
-                .basic("admin@eurder.com", "password")
+                .basic("stef@switchfully.com", "admin")
                 .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .and()
@@ -105,46 +131,68 @@ class ItemControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
-                .extract();
+                .extract().as(PrintItemDTO[].class);
+
+        assertEquals(response.length, itemRepository.findAll().size());
     }
 
     @Test
     void updateItemHappyPath() {
-        long itemId = itemRepository.getItems().get(0).getId();
         given()
                 .baseUri("http://localhost")
                 .port(port)
                 .auth()
                 .preemptive()
-                .basic("admin@eurder.com", "password")
+                .basic("stef@switchfully.com", "admin")
                 .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .and()
                 .body(updateRequestBody)
                 .when()
-                .put("/items/" + itemId)
+                .put("/items/1")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract();
-        Assertions.assertEquals(itemRepository.getItems().get(0).getAmount(), 12);
+        Assertions.assertEquals(12, itemRepository.findById(1L).orElseThrow().getAmount() );
+    }
+
+    @Test
+    void updateItem_asNonAdmin_Unauthorized() {
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic("staf@switchfully.com", "customer1")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
+                .header("Content-type", "application/json")
+                .and()
+                .body(updateRequestBody)
+                .when()
+                .put("/items/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .extract().response();
+
+        assertEquals("You do not have the authorization for this feature", response.jsonPath().getString("message"));
     }
 
         @Test
         void updateItemWithZeroField() {
-            long itemId = itemRepository.getItems().get(0).getId();
             Response response = given()
                     .baseUri("http://localhost")
                     .port(port)
                     .auth()
                     .preemptive()
-                    .basic("admin@eurder.com", "password")
+                    .basic("stef@switchfully.com", "admin")
                     .header("Accept", ContentType.JSON.getAcceptHeader())
                     .header("Content-type", "application/json")
                     .and()
                     .body(requestBodyZeroField)
                     .when()
-                    .put("/items/" + itemId)
+                    .put("/items/1")
                     .then()
                     .assertThat()
                     .statusCode(HttpStatus.BAD_REQUEST.value())

@@ -25,4 +25,8 @@ public abstract class ValidationService {
     protected void validateFieldNotZero(double price) {
         if(price <= 0) throw new IllegalArgumentException("Price must be more than 0!");
     }
+
+    protected void validateIdNotZero(double id){
+        if (id <= 0) throw new IllegalArgumentException("ID must be a positive number!");
+    }
 }

@@ -3,11 +3,11 @@ package com.switchfully.eurder.service.dto.order;
 import java.time.LocalDate;
 
 public class PrintItemGroupDTO {
-    private String itemId;
+    private long itemId;
     private int amount;
     private LocalDate shippingDate;
 
-    public PrintItemGroupDTO setItemId(String itemId){
+    public PrintItemGroupDTO setItemId(long itemId){
         this.itemId = itemId;
         return this;
     }
@@ -20,7 +20,7 @@ public class PrintItemGroupDTO {
         return this;
     }
 
-    public String getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
