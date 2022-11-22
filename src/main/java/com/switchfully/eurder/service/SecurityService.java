@@ -5,7 +5,7 @@ import com.switchfully.eurder.domain.user.Customer;
 import com.switchfully.eurder.domain.user.role.Feature;
 import com.switchfully.eurder.domain.user.role.UsernamePassword;
 import com.switchfully.eurder.service.exception.UnauthorizatedException;
-import com.switchfully.eurder.service.exception.WrongPasswordException;
+import com.switchfully.eurder.service.exception.WrongCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class SecurityService {
@@ -66,17 +64,19 @@ public class SecurityService {
         if(authorization==null){
             throw new UnauthorizatedException();
         }
-        UsernamePassword usernamePassword = getUsernamePassword(authorization);
-        Customer customer = customerRepository.getCustomerByEmail(getEmail(authorization));
 
-        if(!doesPasswordMatch(getEmail(authorization), usernamePassword.getPassword())) {
-            logger.error("Password does not match for user " + usernamePassword.getUsername());
-            throw new WrongPasswordException();
+        UsernamePassword usernamePassword = getUsernamePassword(authorization);
+
+        if (customerRepository.getCustomerByEmail(getEmail(authorization)) == null || !doesPasswordMatch(getEmail(authorization), usernamePassword.getPassword())) {
+            logger.error("Email and/or password are incorrect. Please try again!");
+            throw new WrongCredentialsException();
         }
-        if (!customer.canHaveAccessTo(feature)) {
-            logger.error("User " + customer.getFirstName() + " " + customer.getLastName() + " does not have access to " + feature);
-            throw new UnauthorizatedException();
-        }
+            Customer customer = customerRepository.getCustomerByEmail(getEmail(authorization));
+
+            if (!customer.canHaveAccessTo(feature)) {
+                logger.error("User " + customer.getFirstName() + " " + customer.getLastName() + " does not have access to " + feature);
+                throw new UnauthorizatedException();
+            }
     }
 
     public String getEmail(String auth){

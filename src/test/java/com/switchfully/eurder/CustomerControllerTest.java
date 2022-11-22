@@ -1,5 +1,6 @@
 package com.switchfully.eurder;
 
+import com.switchfully.eurder.api.mapper.CustomerMapper;
 import com.switchfully.eurder.domain.user.CountryCode;
 import com.switchfully.eurder.domain.user.Phonenumber;
 import com.switchfully.eurder.domain.user.address.Address;
@@ -21,7 +22,6 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-
 class CustomerControllerTest {
 
     @LocalServerPort
@@ -29,6 +29,9 @@ class CustomerControllerTest {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private CustomerMapper customerMapper;
 
     String requestBody =
             """
@@ -153,34 +156,87 @@ class CustomerControllerTest {
                 .statusCode(HttpStatus.OK.value())
                 .extract().as(ShowCustomerDTO[].class);
         assertEquals(response.length, customerRepository.findAll().size());
+    }
+
+    @Test
+    public void getAllCustomers_asNonAdmin_unauthorized() {
+
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic("staf@switchfully.com", "customer1")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
+                .header("Content-type", "application/json")
+                .when()
+                .get("/customers")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .extract().response();
+        assertEquals("You do not have the authorization for this feature", response.jsonPath().getString("message"));
 
     }
 
     @Test
     public void getExactCustomerHappyPath() {
-        /* WITHOUT DATABASE
-        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter","pass"));
-
-        customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter","pass"));
-
-        Customer customerToFind = customerRepository.getAllCustomers().stream().findFirst().orElseThrow();
 
         ShowCustomerDTO response = given()
                 .baseUri("http://localhost")
                 .port(port)
                 .auth()
                 .preemptive()
-                .basic("admin@eurder.com", "password")
+                .basic("stef@switchfully.com", "admin")
                 .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .when()
-                .get("/customers/" + customerToFind.getId())
+                .get("/customers/1")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .extract().as(ShowCustomerDTO.class);
-        assertEquals(customerToFind, customerMapper.mapToCustomerToShow(response));
+        assertEquals(customerRepository.findById(1L).orElseThrow(), customerMapper.mapToCustomerToShow(response));
 
-         */
+    }
+
+    @Test
+    public void getExactCustomer_asNonAdmin_unauthorized() {
+
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic("staf@switchfully.com", "customer1")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
+                .header("Content-type", "application/json")
+                .when()
+                .get("/customers/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .extract().response();
+        assertEquals("You do not have the authorization for this feature", response.jsonPath().getString("message"));
+    }
+
+    @Test
+    public void getExactCustomer_asNonMember_forbidden() {
+
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic("stif@switchfully.com", "customer3")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
+                .header("Content-type", "application/json")
+                .when()
+                .get("/customers/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .extract().response();
+        assertEquals("The username and/or password don't match. Please try again.", response.jsonPath().getString("message"));
     }
 }

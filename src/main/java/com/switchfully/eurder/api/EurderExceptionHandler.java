@@ -1,7 +1,7 @@
 package com.switchfully.eurder.api;
 
 import com.switchfully.eurder.service.exception.UnauthorizatedException;
-import com.switchfully.eurder.service.exception.WrongPasswordException;
+import com.switchfully.eurder.service.exception.WrongCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.EOFException;
 import java.io.IOException;
 
 import static org.springframework.http.HttpStatus.*;
@@ -27,12 +26,12 @@ public class EurderExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UnauthorizatedException.class)
     protected void handleUnauthorizedException(UnauthorizatedException ex, HttpServletResponse response) throws IOException {
         logger.error(ex.getMessage());
-        response.sendError(FORBIDDEN.value(), ex.getMessage());
+        response.sendError(UNAUTHORIZED.value(), ex.getMessage());
     }
 
-    @ExceptionHandler(WrongPasswordException.class)
-    protected void handleWrongPasswordException(WrongPasswordException ex, HttpServletResponse response) throws IOException {
+    @ExceptionHandler(WrongCredentialsException.class)
+    protected void handleWrongPasswordException(WrongCredentialsException ex, HttpServletResponse response) throws IOException {
         logger.error(ex.getMessage());
-        response.sendError(UNAUTHORIZED.value(), ex.getMessage());
+        response.sendError(FORBIDDEN.value(), ex.getMessage());
     }
 }
