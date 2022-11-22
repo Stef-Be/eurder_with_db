@@ -2,8 +2,8 @@ package com.switchfully.eurder.service;
 
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.user.Customer;
-import com.switchfully.eurder.domain.user.Feature;
-import com.switchfully.eurder.domain.user.UsernamePassword;
+import com.switchfully.eurder.domain.user.role.Feature;
+import com.switchfully.eurder.domain.user.role.UsernamePassword;
 import com.switchfully.eurder.service.exception.UnauthorizatedException;
 import com.switchfully.eurder.service.exception.WrongPasswordException;
 import org.slf4j.Logger;

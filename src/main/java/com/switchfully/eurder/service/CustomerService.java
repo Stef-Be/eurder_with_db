@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.switchfully.eurder.domain.user.Feature.VIEW_CUSTOMERS;
+import static com.switchfully.eurder.domain.user.role.Feature.VIEW_CUSTOMERS;
 
 @Service
 public class CustomerService {

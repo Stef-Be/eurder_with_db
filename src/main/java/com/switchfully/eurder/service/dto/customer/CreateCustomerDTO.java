@@ -1,12 +1,15 @@
 package com.switchfully.eurder.service.dto.customer;
 
+import com.switchfully.eurder.domain.user.Phonenumber;
+import com.switchfully.eurder.domain.user.address.Address;
+
 public class CreateCustomerDTO {
 
     private String firstName;
     private String lastName;
     private String email;
-    private String address;
-    private String phoneNumber;
+    private Address address;
+    private Phonenumber phoneNumber;
 
     private String password;
 
@@ -30,12 +33,12 @@ public class CreateCustomerDTO {
         return this;
     }
 
-    public CreateCustomerDTO setAddress(String address) {
+    public CreateCustomerDTO setAddress(Address address) {
         this.address = address;
         return this;
     }
 
-    public CreateCustomerDTO setPhoneNumber(String phoneNumber) {
+    public CreateCustomerDTO setPhoneNumber(Phonenumber phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
@@ -52,11 +55,11 @@ public class CreateCustomerDTO {
         return email;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public String getPhoneNumber() {
+    public Phonenumber getPhoneNumber() {
         return phoneNumber;
     }
 

@@ -1,22 +1,46 @@
 package com.switchfully.eurder.domain.user;
 
+import com.switchfully.eurder.domain.user.address.Address;
+import com.switchfully.eurder.domain.user.role.Feature;
+import com.switchfully.eurder.domain.user.role.Role;
+
+import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
 
+import static javax.persistence.EnumType.STRING;
+
+@Entity
+@Table(name="CUSTOMERS")
 public class Customer {
-    private final String id;
-    private final String firstName;
-    private final String lastName;
-    private final String email;
-    private final String address;
-    private final String phoneNumber;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
+    @SequenceGenerator(name = "customer_seq", sequenceName = "customer_seq", allocationSize = 1)
+    private long id;
 
+    @Column(name = "firstname")
+    private String firstName;
+    @Column(name = "lastname")
+    private String lastName;
+    @Column(name="email")
+    private String email;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_address_id")
+    private Address address;
+
+    @Embedded
+    private Phonenumber phoneNumber;
+
+    @Enumerated(STRING)
     private Role role;
 
+    @Transient
     private String password;
 
-    public Customer(String firstName, String lastName, String email, String address, String phoneNumber, String password) {
-        this.id = UUID.randomUUID().toString();
+    public Customer() {
+
+    }
+
+    public Customer(String firstName, String lastName, String email, Address address, Phonenumber phoneNumber, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -30,7 +54,7 @@ public class Customer {
         this.role = role;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
@@ -46,11 +70,11 @@ public class Customer {
         return email;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public String getPhoneNumber() {
+    public Phonenumber getPhoneNumber() {
         return phoneNumber;
     }
 

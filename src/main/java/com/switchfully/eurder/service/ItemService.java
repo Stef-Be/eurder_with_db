@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.switchfully.eurder.domain.user.Feature.*;
+import static com.switchfully.eurder.domain.user.role.Feature.*;
 
 @Service
 public class ItemService {
@@ -43,7 +43,6 @@ public class ItemService {
 
         return foundItems.stream().map(itemMapper::mapToItemToPrint).collect(Collectors.toList());
     }
-
 
     public void updateItem(UpdatedItemDTO updatedItem, String authorization, String id) {
         securityService.validateAuthorization(authorization,CRUD_ITEMS);

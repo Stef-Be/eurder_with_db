@@ -1,9 +1,9 @@
-package com.switchfully.eurder.domain.user;
+package com.switchfully.eurder.domain.user.role;
 
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.switchfully.eurder.domain.user.Feature.*;
+import static com.switchfully.eurder.domain.user.role.Feature.*;
 
 public enum Role {
     ADMIN(newArrayList(CRUD_ITEMS, VIEW_CUSTOMERS)), CUSTOMER(newArrayList(ORDER_ITEMS));

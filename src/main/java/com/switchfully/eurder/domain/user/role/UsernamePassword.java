@@ -1,4 +1,4 @@
-package com.switchfully.eurder.domain.user;
+package com.switchfully.eurder.domain.user.role;
 
 public class UsernamePassword {
     private final String username;

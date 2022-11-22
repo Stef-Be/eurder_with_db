@@ -9,7 +9,7 @@ import com.switchfully.eurder.domain.user.Customer;
 import com.switchfully.eurder.service.validation.OrderValidationService;
 import org.springframework.stereotype.Service;
 
-import static com.switchfully.eurder.domain.user.Feature.ORDER_ITEMS;
+import static com.switchfully.eurder.domain.user.role.Feature.ORDER_ITEMS;
 
 @Service
 public class OrderService {
