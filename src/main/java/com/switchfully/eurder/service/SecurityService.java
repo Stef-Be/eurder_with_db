@@ -10,7 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class SecurityService {
@@ -18,8 +22,44 @@ public class SecurityService {
 
     private final CustomerRepository customerRepository;
 
+    public static final String SALT = "By-the-eurder-of-the-peaky-Stef";
+
     public SecurityService(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
+    }
+
+    public String signup(String password) {
+        String saltedPassword = SALT + password;
+        String hashedPassword = generateHash(saltedPassword);
+        return hashedPassword;
+    }
+
+    public Boolean doesPasswordMatch(String username, String password) {
+        String saltedPassword = SALT + password;
+        String hashedPassword = generateHash(saltedPassword);
+
+        String storedPasswordHash = customerRepository.getCustomerByEmail(username).getPassword();
+        return hashedPassword.equals(storedPasswordHash);
+    }
+
+    public static String generateHash(String input) {
+        StringBuilder hash = new StringBuilder();
+
+        try {
+            MessageDigest sha = MessageDigest.getInstance("SHA-1");
+            byte[] hashedBytes = sha.digest(input.getBytes());
+            char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                    'a', 'b', 'c', 'd', 'e', 'f' };
+            for (int idx = 0; idx < hashedBytes.length; ++idx) {
+                byte b = hashedBytes[idx];
+                hash.append(digits[(b & 0xf0) >> 4]);
+                hash.append(digits[b & 0x0f]);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException("No such algorithm exists!");
+        }
+
+        return hash.toString();
     }
 
     public void validateAuthorization(String authorization, Feature feature) {
@@ -27,9 +67,9 @@ public class SecurityService {
             throw new UnauthorizatedException();
         }
         UsernamePassword usernamePassword = getUsernamePassword(authorization);
-        Customer customer = customerRepository.getCustomerbyEmail(getEmail(authorization));
+        Customer customer = customerRepository.getCustomerByEmail(getEmail(authorization));
 
-        if(!customer.doesPasswordMatch(usernamePassword.getPassword())) {
+        if(!doesPasswordMatch(getEmail(authorization), usernamePassword.getPassword())) {
             logger.error("Password does not match for user " + usernamePassword.getUsername());
             throw new WrongPasswordException();
         }

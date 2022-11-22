@@ -30,19 +30,19 @@ public class CustomerService {
     public void registerNewCustomer(CreateCustomerDTO newCustomerDTO) {
         customerValidationService.validateNoEmptyFields(newCustomerDTO);
         customerValidationService.checkIfUserIsAlreadyCustomer(newCustomerDTO);
-        customerRepository.addNewCustomer(customerMapper.mapToCreatedCustomer(newCustomerDTO));
+        customerRepository.save(customerMapper.mapToCreatedCustomer(newCustomerDTO));
     }
 
     public List<ShowCustomerDTO> getAllCustomers(String authorization) {
         securityService.validateAuthorization(authorization, VIEW_CUSTOMERS);
-        return customerRepository.getAllCustomers()
+        return customerRepository.findAll()
                 .stream()
                 .map(customerMapper::mapToShowDTO)
                 .collect(Collectors.toList());
     }
 
-    public ShowCustomerDTO getExactCustomer(String id, String authorization) {
+    public ShowCustomerDTO getExactCustomer(Long id, String authorization) {
         securityService.validateAuthorization(authorization, VIEW_CUSTOMERS);
-        return customerMapper.mapToShowDTO(customerRepository.getExactCustomer(id));
+        return customerMapper.mapToShowDTO(customerRepository.findById(id).orElseThrow());
     }
 }

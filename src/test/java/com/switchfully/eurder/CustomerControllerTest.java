@@ -1,11 +1,15 @@
 package com.switchfully.eurder;
 
+import com.switchfully.eurder.domain.user.CountryCode;
+import com.switchfully.eurder.domain.user.Phonenumber;
+import com.switchfully.eurder.domain.user.address.Address;
+import com.switchfully.eurder.domain.user.address.PostalCode;
 import com.switchfully.eurder.service.dto.customer.ShowCustomerDTO;
-import com.switchfully.eurder.api.mapper.CustomerMapper;
 import com.switchfully.eurder.domain.user.Customer;
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +21,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+
 class CustomerControllerTest {
 
     @LocalServerPort
@@ -26,28 +30,56 @@ class CustomerControllerTest {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private CustomerMapper customerMapper;
-
     String requestBody =
             """
-                    \"firstName\": \"Stef\",
-                    \"lastName\": \"Bemindt\",
-                    \"email\": \"NoneAYaBussiness@something.com\",
-                    \"address\": \"Funstreet 21 2000 Non-Parking\",
-                    \"phoneNumber\": \"123456789\"}";
+                     {
+                       "firstName": "Stuf",
+                       "lastName": "Bemundt",
+                       "email": "stuf@switchfully.be",
+                       "address": {
+                         "streetName": "Tofstraat",
+                         "houseNumber": "1",
+                         "postalCode": {
+                           "postalCode": "2180",
+                           "city": "Ekeren"
+                         },
+                         "country": "Belgium"
+                       },
+                       "phoneNumber": {
+                         "phone_body": "456789123",
+                         "countryCode": "BELGIUM"
+                       },
+                       "password": "geheimpjeuh"
+                     }
                     """;
 
-    String requestBodyNullField = "{\n" +
-            "  \"firstName\": \"Stef\",\n" +
-            "  \"lastName\": \"Bemindt\",\n" +
-            "  \"email\": \"NoneAYaBussiness@something.com\",\n" +
-            "  \"address\": \"\",\n" +
-            "  \"phoneNumber\": \"123456789\"}";
+    String requestBodyNullField =
+            """
+                     {
+                       "firstName": "Stuf",
+                       "lastName": "Bemundt",
+                       "email": "",
+                       "address": {
+                         "streetName": "Tofstraat",
+                         "houseNumber": "1",
+                         "postalCode": {
+                           "postalCode": "2180",
+                           "city": "Ekeren"
+                         },
+                         "country": "Belgium"
+                       },
+                       "phoneNumber": {
+                         "phone_body": "456789123",
+                         "countryCode": "BELGIUM"
+                       },
+                       "password": "geheimpjeuh"
+                     }
+                    """;
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void createCustomerHappyPath() {
-        /* WITHOUT DATABASE
+
         given()
                 .baseUri("http://localhost")
                 .port(port)
@@ -60,12 +92,12 @@ class CustomerControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract();
-         */
+
+        Assertions.assertThat(customerRepository.findById(4L).isPresent());
     }
 
     @Test
     public void createCustomerWithEmptyField() {
-        /* WITHOUT DATABASE
 
         Response response = given()
                 .baseUri("http://localhost")
@@ -79,16 +111,13 @@ class CustomerControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract().response();
-        assertEquals("Address can not be empty!", response.jsonPath().getString("message"));
+        assertEquals("Email can not be empty!", response.jsonPath().getString("message"));
 
-         */
     }
 
     @Test
     public void createSameCustomerShowsErrorMessage() {
-        /* WITHOUT DATABASE
-
-        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter", "pass"));
+        customerRepository.save(new Customer("Stuf", "Bemundt", "stuf@switchfully.be", new Address("straat", "15", new PostalCode("2180", "Ekeren"), "Belgium"), new Phonenumber("123456789", CountryCode.BELGIUM), "password"));
 
         Response response = given()
                 .baseUri("http://localhost")
@@ -104,23 +133,17 @@ class CustomerControllerTest {
                 .extract().response();
 
         assertEquals("You are already a customer!", response.jsonPath().getString("message"));
-
-         */
     }
 
     @Test
     public void getAllCustomersHappyPath() {
-        /* WITHOUT DATABASE
-        customerRepository.addNewCustomer(new Customer("Stef", "Bemindt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter","pass"));
-
-        customerRepository.addNewCustomer(new Customer("Stefke", "Bemendt", "NoneAYaBussiness@something.com", "indifferent", "doesn't matter","pass"));
 
         ShowCustomerDTO[] response = given()
                 .baseUri("http://localhost")
                 .port(port)
                 .auth()
                 .preemptive()
-                .basic("admin@eurder.com", "password")
+                .basic("stef@switchfully.com", "admin")
                 .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .when()
@@ -129,9 +152,8 @@ class CustomerControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
                 .extract().as(ShowCustomerDTO[].class);
-        assertEquals(response.length, customerRepository.getAllCustomers().size());
+        assertEquals(response.length, customerRepository.findAll().size());
 
-         */
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.switchfully.eurder.domain.user;
 import com.switchfully.eurder.domain.user.address.Address;
 import com.switchfully.eurder.domain.user.role.Feature;
 import com.switchfully.eurder.domain.user.role.Role;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,7 +11,7 @@ import java.util.Objects;
 import static javax.persistence.EnumType.STRING;
 
 @Entity
-@Table(name="CUSTOMERS")
+@Table(name="CUSTOMER")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
@@ -33,7 +34,8 @@ public class Customer {
     @Enumerated(STRING)
     private Role role;
 
-    @Transient
+
+    @Column(name = "password")
     private String password;
 
     public Customer() {
@@ -76,6 +78,10 @@ public class Customer {
 
     public Phonenumber getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public boolean doesPasswordMatch(String password) {

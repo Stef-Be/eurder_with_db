@@ -30,7 +30,7 @@ public class CustomerValidationService extends ValidationService {
 
     public void checkIfUserIsAlreadyCustomer(CreateCustomerDTO newCustomerDTO) {
         Customer customerToAdd = customerMapper.mapToCreatedCustomer(newCustomerDTO);
-        if (customerRepository.getAllCustomers().contains(customerToAdd)) {
+        if (customerRepository.findAll().contains(customerToAdd)) {
             throw new IllegalArgumentException("You are already a customer!");
         }
     }

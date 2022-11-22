@@ -19,7 +19,8 @@ create table customer
     country_code varchar(255),
     phone_body varchar(255),
     role varchar(255),
-    fk_address_id bigint constraint fk_address_id references address
+    fk_address_id bigint constraint fk_address_id references address,
+    password varchar(255)
 );
 
 create sequence customer_seq start with 1 increment by 1;

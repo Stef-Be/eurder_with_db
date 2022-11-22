@@ -1,5 +1,6 @@
 package com.switchfully.eurder.api.mapper;
 
+import com.switchfully.eurder.service.SecurityService;
 import com.switchfully.eurder.service.dto.customer.CreateCustomerDTO;
 import com.switchfully.eurder.service.dto.customer.ShowCustomerDTO;
 import com.switchfully.eurder.domain.user.Customer;
@@ -8,13 +9,19 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerMapper {
 
+    private SecurityService securityService;
+
+    public CustomerMapper(SecurityService securityService) {
+        this.securityService = securityService;
+    }
+
     public Customer mapToCreatedCustomer(CreateCustomerDTO newCustomerDTO) {
         return new Customer(newCustomerDTO.getFirstName(),
                             newCustomerDTO.getLastName(),
                             newCustomerDTO.getEmail(),
                             newCustomerDTO.getAddress(),
                             newCustomerDTO.getPhoneNumber(),
-                            newCustomerDTO.getPassword());
+                            securityService.signup(newCustomerDTO.getPassword()));
     }
 
     public Customer mapToCustomerToShow(ShowCustomerDTO showCustomerDTO) {

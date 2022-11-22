@@ -39,7 +39,7 @@ public class CustomerController {
 
     @GetMapping(path = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ShowCustomerDTO getExactCustomer(@PathVariable String id, @RequestHeader String authorization){
+    public ShowCustomerDTO getExactCustomer(@PathVariable Long id, @RequestHeader String authorization){
         logger.info("Getting a customer");
         return customerService.getExactCustomer(id, authorization);
     }

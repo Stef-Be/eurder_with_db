@@ -31,7 +31,7 @@ public class OrderService {
     public PrintOrderDTO addNewOrder(String authorization, AddOrderDTO newOrder) {
         securityService.validateAuthorization(authorization, ORDER_ITEMS);
         orderValidationService.validateNoEmptyFields(newOrder);
-        Customer orderingCustomer = customerRepository.getCustomerbyEmail(securityService.getEmail(authorization));
+        Customer orderingCustomer = customerRepository.getCustomerByEmail(securityService.getEmail(authorization));
 
         orderRepository.addNewOrder(orderingCustomer, orderMapper.mapToOrder(newOrder));
 

@@ -19,13 +19,6 @@ public class Address {
     @Column(name = "country")
     private String country;
 
-    public PostalCode getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(PostalCode postalCode) {
-        this.postalCode = postalCode;
-    }
 
     public Address() {
 
@@ -36,5 +29,23 @@ public class Address {
         this.houseNumber = houseNumber;
         this.postalCode = postalCode;
         this.country = country;
+    }
+    public void setPostalCode(PostalCode postalCode) {
+        this.postalCode = postalCode;
+    }
+    public PostalCode getPostalCode() {
+        return postalCode;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public String getCountry() {
+        return country;
     }
 }
