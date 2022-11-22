@@ -1,26 +1,36 @@
 package com.switchfully.eurder.domain.item;
 
+import javax.persistence.*;
 import java.util.Objects;
-import java.util.UUID;
 
+@Entity
+@Table(name="ITEM")
 public class Item {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_seq")
+    @SequenceGenerator(name = "item_seq", sequenceName = "item_seq", allocationSize = 1)
+    private long id;
 
-    private final String id;
-    private final String name;
-    private final String description;
-    private final double price;
-    private final int amount;
+    @Column(name="name")
+    private String name;
+    @Column(name="description")
+    private String description;
+    @Column(name="price")
+    private double price;
+    @Column(name="amount")
+    private int amount;
+
+    public Item(){};
 
     public Item(String name, String description, double price, int amount) {
-        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.description = description;
         this.price = price;
         this.amount = amount;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 

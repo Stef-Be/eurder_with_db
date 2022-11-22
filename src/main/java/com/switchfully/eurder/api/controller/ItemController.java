@@ -33,7 +33,7 @@ public class ItemController {
 
     @PutMapping(path="{id}",consumes =  APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void updateItem(@RequestHeader(required = false) String authorization, @RequestBody UpdatedItemDTO updatedItem, @PathVariable String id){
+    public void updateItem(@RequestHeader(required = false) String authorization, @RequestBody UpdatedItemDTO updatedItem, @PathVariable long id){
         logger.info("Updating item");
         itemService.updateItem(updatedItem, authorization, id);
     }

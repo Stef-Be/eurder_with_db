@@ -2,13 +2,13 @@ package com.switchfully.eurder.service.dto.item;
 
 public class PrintItemDTO {
 
-    private String id;
+    private long id;
     private String name;
     private String description;
     private double price;
     private int amount;
 
-    public PrintItemDTO setID(String id){
+    public PrintItemDTO setID(long id){
         this.id = id;
         return this;
     }
@@ -47,7 +47,7 @@ public class PrintItemDTO {
         return amount;
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 }

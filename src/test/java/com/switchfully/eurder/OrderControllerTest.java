@@ -31,7 +31,7 @@ class OrderControllerTest {
 
     @Test
     void orderItemsHappyPath() {
-        String itemId = itemRepository.getItems().get(0).getId();
+        long itemId = itemRepository.getItems().get(0).getId();
         String orderBody = "{\n" +
                 "  \"itemGroupDTOList\": [\n" +
                 "    {\n" +
@@ -57,7 +57,7 @@ class OrderControllerTest {
                 .statusCode(HttpStatus.CREATED.value())
                 .extract().as(PrintOrderDTO.class);
 
-        Assertions.assertEquals(response.getFinalPrice(), "Final price: "+itemRepository.getItem(itemId).getPrice()*5);
+        Assertions.assertEquals(response.getFinalPrice(), "Final price: " + itemRepository.getItem(itemId).getPrice()*5);
     }
 
     @Test

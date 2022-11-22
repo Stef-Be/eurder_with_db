@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Component
 public class ItemRepository {
-    private Map<String, Item> items;
+    private Map<Long, Item> items;
 
     public ItemRepository() {
         this.items = new HashMap<>();
@@ -35,7 +35,7 @@ public class ItemRepository {
         return items.values().stream().toList();
     }
 
-    public Item getItem(String id){return items.get(id);}
+    public Item getItem(long id){return items.get(id);}
 
     private boolean isInStock(String itemId, int amount) {
         return items.get(itemId).getAmount() >= amount;
@@ -48,7 +48,7 @@ public class ItemRepository {
         addNewItem(wood);
     }
 
-    public void updateItem(String id, Item updatedItem) {
+    public void updateItem(long id, Item updatedItem) {
         items.put(id, updatedItem);
     }
 }

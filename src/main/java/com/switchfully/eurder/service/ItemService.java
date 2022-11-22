@@ -44,7 +44,7 @@ public class ItemService {
         return foundItems.stream().map(itemMapper::mapToItemToPrint).collect(Collectors.toList());
     }
 
-    public void updateItem(UpdatedItemDTO updatedItem, String authorization, String id) {
+    public void updateItem(UpdatedItemDTO updatedItem, String authorization, long id) {
         securityService.validateAuthorization(authorization,CRUD_ITEMS);
         itemValidationService.validateNoEmptyFields(updatedItem);
         itemRepository.updateItem(id, itemMapper.mapToItem(updatedItem));

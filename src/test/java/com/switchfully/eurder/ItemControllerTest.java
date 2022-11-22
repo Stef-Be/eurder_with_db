@@ -110,7 +110,7 @@ class ItemControllerTest {
 
     @Test
     void updateItemHappyPath() {
-        String itemId = itemRepository.getItems().get(0).getId();
+        long itemId = itemRepository.getItems().get(0).getId();
         given()
                 .baseUri("http://localhost")
                 .port(port)
@@ -132,7 +132,7 @@ class ItemControllerTest {
 
         @Test
         void updateItemWithZeroField() {
-            String itemId = itemRepository.getItems().get(0).getId();
+            long itemId = itemRepository.getItems().get(0).getId();
             Response response = given()
                     .baseUri("http://localhost")
                     .port(port)
