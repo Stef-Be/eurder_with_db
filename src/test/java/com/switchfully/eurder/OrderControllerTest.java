@@ -1,5 +1,6 @@
 package com.switchfully.eurder;
 
+import com.switchfully.eurder.domain.repository.ItemGroupRepository;
 import com.switchfully.eurder.service.dto.order.PrintOrderDTO;
 import com.switchfully.eurder.domain.repository.ItemRepository;
 import io.restassured.http.ContentType;
@@ -11,10 +12,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.time.LocalDate;
+
 import static io.restassured.RestAssured.given;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class OrderControllerTest {
 
     @LocalServerPort
@@ -23,14 +25,8 @@ class OrderControllerTest {
     @Autowired
     private ItemRepository itemRepository;
 
-    String requestBody = "{\n" +
-            "  \"name\": \"Screw\",\n" +
-            "  \"description\": \"Something to make stuff fixed\",\n" +
-            "  \"price\": 5.9,\n" +
-            "  \"amount\": 5}";
-
-    @Test
-    void orderItemsHappyPath() {
+    @Autowired
+    private ItemGroupRepository itemGroupRepository;
         String orderBody = """
                 {
                   "customerId": 2,
@@ -41,6 +37,8 @@ class OrderControllerTest {
                     }
                   ]
                 }""";
+    @Test
+    void orderItemsHappyPath() {
 
         PrintOrderDTO response = given()
                 .baseUri("http://localhost")
@@ -59,8 +57,70 @@ class OrderControllerTest {
                 .statusCode(HttpStatus.CREATED.value())
                 .extract().as(PrintOrderDTO.class);
 
-        Assertions.assertEquals(response.getFinalPrice(), "Final price: " + itemRepository.findById(1L).orElseThrow().getPrice()*10);
+        Assertions.assertEquals(response.getFinalPrice(), "Final price: " + itemRepository.findById(1L).orElseThrow().getPrice() * 10);
     }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
+    void orderItems_whenInStock_shippingDateTomorrow() {
+
+        PrintOrderDTO response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic("staf@switchfully.com", "customer1")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
+                .header("Content-type", "application/json")
+                .and()
+                .body(orderBody)
+                .when()
+                .post("/orders")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract().as(PrintOrderDTO.class);
+
+        Assertions.assertEquals(itemGroupRepository.findById(4L).orElseThrow().getShippingDate(), LocalDate.now().plusDays(1));
+    }
+
+    @Test
+    void orderItems_whenInsufficientStock_shippingDateTomorrow() {
+
+        String orderBodyBig = """
+                {
+                  "customerId": 2,
+                  "itemGroupDTOList": [
+                    {
+                      "itemId": 1,
+                      "amount": 101
+                    }
+                  ]
+                }""";
+
+        PrintOrderDTO response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .auth()
+                .preemptive()
+                .basic("staf@switchfully.com", "customer1")
+                .header("Accept", ContentType.JSON.getAcceptHeader())
+                .header("Content-type", "application/json")
+                .and()
+                .body(orderBodyBig)
+                .when()
+                .post("/orders")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract().as(PrintOrderDTO.class);
+
+
+        Assertions.assertEquals(itemGroupRepository.findById(4L).orElseThrow().getShippingDate(), LocalDate.now().plusDays(7));
+    }
+
+
+
 
     @Test
     void orderItemsUnauthorized() {
@@ -73,7 +133,7 @@ class OrderControllerTest {
                 .header("Accept", ContentType.JSON.getAcceptHeader())
                 .header("Content-type", "application/json")
                 .and()
-                .body(requestBody)
+                .body(orderBody)
                 .when()
                 .post("/orders")
                 .then()
