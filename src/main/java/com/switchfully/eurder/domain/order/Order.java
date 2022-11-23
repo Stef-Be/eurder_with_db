@@ -1,22 +1,38 @@
 package com.switchfully.eurder.domain.order;
 
-import java.util.List;
-import java.util.UUID;
+import com.switchfully.eurder.domain.user.Customer;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "ORDER")
 public class Order {
-    private final List<ItemGroup> itemGroups;
-    private final String customerId;
 
-    public Order(List<ItemGroup> items) {
-        this.customerId = UUID.randomUUID().toString();
-        this.itemGroups = items;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
+    @SequenceGenerator(name = "order_seq", sequenceName = "order_seq", allocationSize = 1)
+    private long id;
+
+    @ManyToOne
+    @JoinColumn(name="fk_customer_id")
+    private Customer customer;
+
+    @Column(name="final_price")
+    private double finalPrice;
+
+    public Order(){};
+
+
+    public Order(Customer customer, double finalPrice) {
+        this.finalPrice = finalPrice;
+        this.customer = customer;
     }
 
-    public List<ItemGroup> getItemGroups() {
-        return itemGroups;
+    public long getId() {
+        return id;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public double getFinalPrice() {
+        return finalPrice;
     }
 }

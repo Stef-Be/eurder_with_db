@@ -21,7 +21,7 @@ public class Item {
     @Column(name="amount")
     private int amount;
 
-    public Item(){};
+    public Item(){}
 
     public Item(String name, String description, double price, int amount) {
         this.name = name;

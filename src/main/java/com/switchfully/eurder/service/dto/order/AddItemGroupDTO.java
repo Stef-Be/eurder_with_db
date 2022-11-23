@@ -14,7 +14,6 @@ public class AddItemGroupDTO {
         return this;
     }
 
-
     public long getItemId() {
         return itemId;
     }
@@ -22,4 +21,5 @@ public class AddItemGroupDTO {
     public int getAmount() {
         return amount;
     }
+
 }

@@ -1,25 +1,17 @@
 package com.switchfully.eurder.service.dto.order;
 
-import java.util.List;
 public class PrintOrderDTO {
-    private List<PrintItemGroupDTO> printItemGroupDTO;
+
+    private long customerId;
     private String finalPrice;
 
-    public PrintOrderDTO setPrintItemGroupDTO(List<PrintItemGroupDTO> printItemGroupDTO){
-        this.printItemGroupDTO = printItemGroupDTO;
+    public PrintOrderDTO setCustomerId(long customerId){
+        this.customerId = customerId;
         return this;
     }
 
     public PrintOrderDTO setFinalPrice(String finalPrice){
         this.finalPrice = finalPrice;
         return this;
-    }
-
-    public List<PrintItemGroupDTO> getPrintItemGroupDTO() {
-        return printItemGroupDTO;
-    }
-
-    public String getFinalPrice() {
-        return finalPrice;
     }
 }

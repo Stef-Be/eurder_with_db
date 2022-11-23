@@ -1,7 +1,7 @@
 package com.switchfully.eurder.api.mapper;
 
+import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.repository.ItemRepository;
-import com.switchfully.eurder.service.OrderService;
 import com.switchfully.eurder.service.dto.order.AddItemGroupDTO;
 import com.switchfully.eurder.service.dto.order.AddOrderDTO;
 import com.switchfully.eurder.service.dto.order.PrintItemGroupDTO;
@@ -18,21 +18,20 @@ public class OrderMapper {
 
     private ItemRepository itemRepository;
 
-    public OrderMapper(ItemRepository itemRepository) {
+    private CustomerRepository customerRepository;
+
+    public OrderMapper(ItemRepository itemRepository, CustomerRepository customerRepository) {
         this.itemRepository = itemRepository;
+        this.customerRepository = customerRepository;
     }
 
-    public Order mapToOrder(AddOrderDTO newOrder) {
-        List<ItemGroup> itemGroupList = newOrder
-                .getItemGroupDTOList()
-                .stream().map(itemGroupDTO->mapToItemGroup(itemGroupDTO, calculateShippingDate(itemGroupDTO.getItemId(), itemGroupDTO.getAmount())))
-                .toList();
-        return new Order(itemGroupList);
+    public Order mapToOrder(AddOrderDTO newOrder, double finalPrice) {
+        return new Order(customerRepository.findById(newOrder.getCustomerId()).orElseThrow(), finalPrice);
     }
 
-    public ItemGroup mapToItemGroup(AddItemGroupDTO itemGroupDTO, LocalDate shippingDate){
-        return new ItemGroup(itemGroupDTO.getItemId(), itemGroupDTO.getAmount(), shippingDate);
-    }
+    /* public ItemGroup mapToItemGroup(AddItemGroupDTO itemGroupDTO, LocalDate shippingDate){
+        return new ItemGroup(itemRepository.findById(itemGroupDTO.getItemId()).orElseThrow(), itemGroupDTO.getAmount(), shippingDate, itemGroupDTO.getOrder());
+    }*/
 
     public List<PrintItemGroupDTO> mapAddToPrintItemGroupDTO(List<AddItemGroupDTO> itemGroupDTOList) {
         return itemGroupDTOList.stream().map(itemGroupDTO -> new PrintItemGroupDTO()

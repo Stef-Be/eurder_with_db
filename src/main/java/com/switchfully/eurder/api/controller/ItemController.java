@@ -44,6 +44,4 @@ public class ItemController {
         logger.info("Showing all items");
         return itemService.getAllItems(authorization);
     }
-
-
 }
