@@ -14,4 +14,12 @@ public class PrintOrderDTO {
         this.finalPrice = finalPrice;
         return this;
     }
+
+    public long getCustomerId() {
+        return customerId;
+    }
+
+    public String getFinalPrice() {
+        return finalPrice;
+    }
 }
