@@ -27,8 +27,8 @@ public class OrderMapper {
         this.orderRepository = orderRepository;
     }
 
-    public Order mapToOrder(AddOrderDTO newOrder, double finalPrice) {
-        return new Order(customerRepository.findById(newOrder.getCustomerId()).orElseThrow(), finalPrice);
+    public Order mapToOrder(long id, double finalPrice) {
+        return new Order(customerRepository.findById(id).orElseThrow(), finalPrice);
     }
 
     public ItemGroup mapToItemGroup(AddItemGroupDTO itemGroupDTO, LocalDate shippingDate, Order orderToConnectToItemGroup){

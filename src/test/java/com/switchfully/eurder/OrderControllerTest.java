@@ -27,16 +27,16 @@ class OrderControllerTest {
 
     @Autowired
     private ItemGroupRepository itemGroupRepository;
-        String orderBody = """
+    String orderBody = """
+            {
+              "itemGroupDTOList": [
                 {
-                  "customerId": 2,
-                  "itemGroupDTOList": [
-                    {
-                      "itemId": 1,
-                      "amount": 10
-                    }
-                  ]
-                }""";
+                  "itemId": 1,
+                  "amount": 10
+                }
+              ]
+            }""";
+
     @Test
     void orderItemsHappyPath() {
 
@@ -64,7 +64,7 @@ class OrderControllerTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     void orderItems_whenInStock_shippingDateTomorrow() {
 
-        PrintOrderDTO response = given()
+        given()
                 .baseUri("http://localhost")
                 .port(port)
                 .auth()
@@ -79,7 +79,7 @@ class OrderControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
-                .extract().as(PrintOrderDTO.class);
+                .extract();
 
         Assertions.assertEquals(itemGroupRepository.findById(4L).orElseThrow().getShippingDate(), LocalDate.now().plusDays(1));
     }
@@ -89,13 +89,13 @@ class OrderControllerTest {
 
         String orderBodyBig = """
                 {
-                  "customerId": 2,
                   "itemGroupDTOList": [
                     {
                       "itemId": 1,
                       "amount": 101
                     }
                   ]
+                }
                 }""";
 
         PrintOrderDTO response = given()
@@ -120,10 +120,8 @@ class OrderControllerTest {
     }
 
 
-
-
     @Test
-    void orderItemsUnauthorized() {
+    void orderItems_asAdmin_Unauthorized() {
         given()
                 .baseUri("http://localhost")
                 .port(port)

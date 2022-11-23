@@ -10,8 +10,6 @@ import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.repository.OrderRepository;
 import com.switchfully.eurder.service.validation.OrderValidationService;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.PostPersist;
 import javax.transaction.Transactional;
 
 import java.time.LocalDate;
@@ -46,16 +44,19 @@ public class OrderService {
         securityService.validateAuthorization(authorization, ORDER_ITEMS);
         orderValidationService.validateNoEmptyFields(newOrder);
 
-        Order orderToSave = orderMapper.mapToOrder(newOrder, calculateFinalPrice(newOrder));
+        Order orderToSave = orderMapper.mapToOrder(customerRepository.getCustomerByEmail(securityService.getEmail(authorization)).getId(), calculateFinalPrice(newOrder));
+
         orderRepository.save(orderToSave);
 
         saveItemGroups(newOrder, orderToSave);
 
-        return getPrintOrderDTO(newOrder);
+        return getPrintOrderDTO(newOrder, authorization);
     }
 
     public void saveItemGroups(AddOrderDTO newOrder, Order orderToSave) {
-        newOrder.getItemGroupDTOList().forEach(addItemGroupDTO -> itemGroupRepository.save(orderMapper.mapToItemGroup(addItemGroupDTO, calculateShippingDate(addItemGroupDTO.getItemId(), addItemGroupDTO.getAmount()), orderToSave)));
+        newOrder.getItemGroupDTOList()
+                .forEach(addItemGroupDTO -> itemGroupRepository.save
+                        (orderMapper.mapToItemGroup(addItemGroupDTO, calculateShippingDate(addItemGroupDTO.getItemId(), addItemGroupDTO.getAmount()), orderToSave)));
     }
 
     public LocalDate calculateShippingDate(long itemId, int amount) {
@@ -67,8 +68,10 @@ public class OrderService {
         return itemRepository.findById(itemId).orElseThrow().getAmount() >= amount;
     }
 
-    private PrintOrderDTO getPrintOrderDTO(AddOrderDTO newOrder) {
-        return new PrintOrderDTO().setCustomerId(newOrder.getCustomerId()).setFinalPrice(("Final price: " + calculateFinalPrice(newOrder)));
+    private PrintOrderDTO getPrintOrderDTO(AddOrderDTO newOrder, String authorization) {
+        return new PrintOrderDTO()
+                .setCustomerId(customerRepository.getCustomerByEmail(securityService.getEmail(authorization)).getId())
+                .setFinalPrice(("Final price: " + calculateFinalPrice(newOrder)));
     }
 
     public double calculateFinalPrice(AddOrderDTO newOrder) {

@@ -4,20 +4,15 @@ import java.util.List;
 
 public class AddOrderDTO {
 
-    private long customerId;
-
     private List<AddItemGroupDTO> itemGroupDTOList;
 
-    public AddOrderDTO(long customerId, List<AddItemGroupDTO> itemGroupDTOList) {
-        this.customerId = customerId;
+    public AddOrderDTO(List<AddItemGroupDTO> itemGroupDTOList) {
         this.itemGroupDTOList = itemGroupDTOList;
     }
 
+    public AddOrderDTO(){} //doet niks maar is nodig om tests te doen slagen??
+
     public List<AddItemGroupDTO> getItemGroupDTOList() {
         return itemGroupDTOList;
-    }
-
-    public long getCustomerId() {
-        return customerId;
     }
 }
