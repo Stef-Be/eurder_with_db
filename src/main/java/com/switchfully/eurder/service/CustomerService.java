@@ -8,7 +8,6 @@ import com.switchfully.eurder.service.validation.CustomerValidationService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.beans.Transient;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +45,6 @@ public class CustomerService {
 
     public ShowCustomerDTO getExactCustomer(Long id, String authorization) {
         securityService.validateAuthorization(authorization, VIEW_CUSTOMERS);
-        return customerMapper.mapToShowDTO(customerRepository.findById(id).orElseThrow());
+        return customerMapper.mapToShowDTO(customerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such customer exists!")));
     }
 }

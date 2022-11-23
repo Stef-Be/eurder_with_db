@@ -1,8 +1,6 @@
 package com.switchfully.eurder.domain.user.address;
 
 import javax.persistence.Embeddable;
-
-
 @Embeddable
 public class PostalCode {
     private String postalCode;

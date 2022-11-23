@@ -3,7 +3,6 @@ package com.switchfully.eurder.domain.user;
 import com.switchfully.eurder.domain.user.address.Address;
 import com.switchfully.eurder.domain.user.role.Feature;
 import com.switchfully.eurder.domain.user.role.Role;
-import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.*;
 import java.util.Objects;

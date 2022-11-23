@@ -47,7 +47,6 @@ public class OrderService {
         orderValidationService.validateNoEmptyFields(newOrder);
 
         Order orderToSave = orderMapper.mapToOrder(newOrder, calculateFinalPrice(newOrder));
-
         orderRepository.save(orderToSave);
 
         saveItemGroups(newOrder, orderToSave);
