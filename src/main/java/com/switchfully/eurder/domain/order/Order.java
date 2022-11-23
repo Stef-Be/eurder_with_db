@@ -5,7 +5,7 @@ import com.switchfully.eurder.domain.user.Customer;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "ORDER")
+@Table(name = "ORDERS")
 public class Order {
 
     @Id
@@ -34,5 +34,9 @@ public class Order {
 
     public double getFinalPrice() {
         return finalPrice;
+    }
+
+    public Customer getCustomer() {
+        return customer;
     }
 }
