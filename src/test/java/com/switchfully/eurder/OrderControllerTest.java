@@ -31,14 +31,17 @@ class OrderControllerTest {
 
     @Test
     void orderItemsHappyPath() {
-        /* String orderBody = "{\n" +
-                "  \"itemGroupDTOList\": [\n" +
-                "    {\n" +
-                "      \"itemId\": 1\",\n" +
-                "      \"amount\": 5\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
+        String orderBody = """
+                {
+                  "customerId": 2,
+                  "itemGroupDTOList": [
+                    {
+                      "itemId": 1,
+                      "amount": 10
+                    }
+                  ]
+                }""";
+
         PrintOrderDTO response = given()
                 .baseUri("http://localhost")
                 .port(port)
@@ -56,9 +59,7 @@ class OrderControllerTest {
                 .statusCode(HttpStatus.CREATED.value())
                 .extract().as(PrintOrderDTO.class);
 
-        Assertions.assertEquals(response.getFinalPrice(), "Final price: " + itemRepository.findById(1L).orElseThrow().getPrice()*5);
-
-         */
+        Assertions.assertEquals(response.getFinalPrice(), "Final price: " + itemRepository.findById(1L).orElseThrow().getPrice()*10);
     }
 
     @Test
