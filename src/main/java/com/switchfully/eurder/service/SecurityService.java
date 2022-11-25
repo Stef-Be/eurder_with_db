@@ -26,7 +26,7 @@ public class SecurityService {
         this.customerRepository = customerRepository;
     }
 
-    public String getHashedPassword(String password) {
+    public String signup(String password) {
         String saltedPassword = SALT + password;
         return generateHash(saltedPassword);
     }

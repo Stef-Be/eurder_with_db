@@ -57,4 +57,8 @@ public class ItemGroup {
     public Order getOrder() {
         return order;
     }
+
+    public double calculateFinalPrice(){
+        return getItem().getPrice()*amount;
+    }
 }

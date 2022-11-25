@@ -43,4 +43,6 @@ public class CustomerController {
         logger.info("Getting a customer");
         return customerService.getExactCustomer(id, authorization);
     }
+
+
 }
