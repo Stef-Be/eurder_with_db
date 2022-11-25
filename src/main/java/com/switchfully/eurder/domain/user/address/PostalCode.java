@@ -3,23 +3,23 @@ package com.switchfully.eurder.domain.user.address;
 import javax.persistence.Embeddable;
 @Embeddable
 public class PostalCode {
-    private String postalCode;
+    private String code;
     private String city;
 
     public PostalCode(){
     };
 
-    public PostalCode(String postalCode, String city) {
-        this.postalCode = postalCode;
+    public PostalCode(String code, String city) {
+        this.code = code;
         this.city = city;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    public void setCode(String postalCode) {
+        this.code = postalCode;
     }
 
     public String getCity() {

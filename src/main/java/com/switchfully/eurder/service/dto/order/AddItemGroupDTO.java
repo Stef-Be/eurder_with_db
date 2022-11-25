@@ -1,17 +1,11 @@
 package com.switchfully.eurder.service.dto.order;
 
-
-import com.switchfully.eurder.domain.repository.OrderRepository;
-import net.minidev.json.annotate.JsonIgnore;
-
 public class AddItemGroupDTO {
 
-    private OrderRepository orderRepository;
     private long itemId;
     private int amount;
 
-    public AddItemGroupDTO(OrderRepository orderRepository, long itemId, int amount) {
-        this.orderRepository = orderRepository;
+    public AddItemGroupDTO(long itemId, int amount) {
         this.itemId = itemId;
         this.amount = amount;
     }

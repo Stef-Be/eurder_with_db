@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.switchfully.eurder.domain.user.role.Feature.*;
 
@@ -43,7 +42,7 @@ public class ItemService {
         securityService.validateAuthorization(authorization, CRUD_ITEMS);
         List<Item> foundItems = itemRepository.findAll();
 
-        return foundItems.stream().map(itemMapper::mapToItemToPrint).collect(Collectors.toList());
+        return foundItems.stream().map(itemMapper::mapToItemToPrint).toList();
     }
 
     public void updateItem(UpdatedItemDTO updatedItem, String authorization, long id) {

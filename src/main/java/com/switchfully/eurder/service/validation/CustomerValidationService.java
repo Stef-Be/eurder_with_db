@@ -1,6 +1,5 @@
 package com.switchfully.eurder.service.validation;
 
-import com.switchfully.eurder.domain.user.Phonenumber;
 import com.switchfully.eurder.service.dto.customer.CreateCustomerDTO;
 import com.switchfully.eurder.api.mapper.CustomerMapper;
 import com.switchfully.eurder.domain.repository.CustomerRepository;

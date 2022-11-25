@@ -46,7 +46,7 @@ class ItemControllerTest {
           "  \"amount\": 12}";
 
     @Test
-    public void addItemHappyPath() {
+    void addItemHappyPath() {
 
         given()
                 .baseUri("http://localhost")
@@ -69,7 +69,7 @@ class ItemControllerTest {
     }
 
     @Test
-    public void addItem_asMember_unauthorized() {
+    void addItem_asMember_unauthorized() {
 
         Response response = given()
                 .baseUri("http://localhost")
@@ -92,7 +92,7 @@ class ItemControllerTest {
     }
 
     @Test
-    public void addItemWithZeroFieldShowsCorrectError() {
+    void addItemWithZeroFieldShowsCorrectError() {
 
         Response response = given()
                 .baseUri("http://localhost")

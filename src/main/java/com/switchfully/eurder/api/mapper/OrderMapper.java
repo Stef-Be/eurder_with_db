@@ -2,9 +2,7 @@ package com.switchfully.eurder.api.mapper;
 
 import com.switchfully.eurder.domain.repository.CustomerRepository;
 import com.switchfully.eurder.domain.repository.ItemRepository;
-import com.switchfully.eurder.domain.repository.OrderRepository;
 import com.switchfully.eurder.service.dto.order.AddItemGroupDTO;
-import com.switchfully.eurder.service.dto.order.AddOrderDTO;
 import com.switchfully.eurder.domain.order.ItemGroup;
 import com.switchfully.eurder.domain.order.Order;
 import org.springframework.stereotype.Component;
@@ -19,12 +17,9 @@ public class OrderMapper {
 
     private CustomerRepository customerRepository;
 
-    private OrderRepository orderRepository;
-
-    public OrderMapper(ItemRepository itemRepository, CustomerRepository customerRepository, OrderRepository orderRepository) {
+    public OrderMapper(ItemRepository itemRepository, CustomerRepository customerRepository) {
         this.itemRepository = itemRepository;
         this.customerRepository = customerRepository;
-        this.orderRepository = orderRepository;
     }
 
     public Order mapToOrder(long id, double finalPrice) {

@@ -17,6 +17,6 @@ public class OrderValidationService extends ValidationService {
 
     private void validateFieldsNotNull(AddOrderDTO newOrder) {
         newOrder.getItemGroupDTOList().stream()
-                .forEach(itemGroupDTO -> validateFieldsNotNull(itemGroupDTO));
+                .forEach(this::validateFieldsNotNull);
     }
 }

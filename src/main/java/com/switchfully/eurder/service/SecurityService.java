@@ -26,10 +26,9 @@ public class SecurityService {
         this.customerRepository = customerRepository;
     }
 
-    public String signup(String password) {
+    public String getHashedPassword(String password) {
         String saltedPassword = SALT + password;
-        String hashedPassword = generateHash(saltedPassword);
-        return hashedPassword;
+        return generateHash(saltedPassword);
     }
 
     public Boolean doesPasswordMatch(String username, String password) {

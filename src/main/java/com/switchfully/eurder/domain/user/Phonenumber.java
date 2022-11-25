@@ -6,24 +6,24 @@ import javax.persistence.Enumerated;
 
 @Embeddable
 public class Phonenumber {
-    private String phone_body;
+    private String phoneBody;
 
     @Enumerated(EnumType.STRING)
     private CountryCode countryCode;
 
-    public Phonenumber(){};
+    public Phonenumber(){}
 
-    public Phonenumber(String phone_body, CountryCode countryCode) {
-        this.phone_body = phone_body;
+    public Phonenumber(String phoneBody, CountryCode countryCode) {
+        this.phoneBody = phoneBody;
         this.countryCode = countryCode;
     }
 
-    public String getPhone_body() {
-        return phone_body;
+    public String getPhoneBody() {
+        return phoneBody;
     }
 
-    public void setPhone_body(String body) {
-        this.phone_body = body;
+    public void setPhoneBody(String body) {
+        this.phoneBody = body;
     }
 
     public CountryCode getCountryCode() {

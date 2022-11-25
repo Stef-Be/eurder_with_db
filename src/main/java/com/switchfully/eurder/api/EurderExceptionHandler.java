@@ -15,23 +15,23 @@ import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class EurderExceptionHandler extends ResponseEntityExceptionHandler {
-    private final Logger logger = LoggerFactory.getLogger(EurderExceptionHandler.class);
+    private final Logger expectionLogger = LoggerFactory.getLogger(EurderExceptionHandler.class);
 
     @ExceptionHandler(IllegalArgumentException.class)
     protected void handleIllegalArgumentExceptions(IllegalArgumentException ex, HttpServletResponse response) throws IOException {
-        logger.error(ex.getMessage());
+        expectionLogger.error(ex.getMessage());
         response.sendError(BAD_REQUEST.value(), ex.getMessage());
     }
 
     @ExceptionHandler(UnauthorizatedException.class)
     protected void handleUnauthorizedException(UnauthorizatedException ex, HttpServletResponse response) throws IOException {
-        logger.error(ex.getMessage());
+        expectionLogger.error(ex.getMessage());
         response.sendError(UNAUTHORIZED.value(), ex.getMessage());
     }
 
     @ExceptionHandler(WrongCredentialsException.class)
     protected void handleWrongPasswordException(WrongCredentialsException ex, HttpServletResponse response) throws IOException {
-        logger.error(ex.getMessage());
+        expectionLogger.error(ex.getMessage());
         response.sendError(FORBIDDEN.value(), ex.getMessage());
     }
 }

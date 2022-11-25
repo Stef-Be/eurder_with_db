@@ -81,7 +81,7 @@ class CustomerControllerTest {
 
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-    public void createCustomerHappyPath() {
+    void createCustomerHappyPath() {
 
         given()
                 .baseUri("http://localhost")
@@ -100,7 +100,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    public void createCustomerWithEmptyField() {
+    void createCustomerWithEmptyField() {
 
         Response response = given()
                 .baseUri("http://localhost")
@@ -119,7 +119,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    public void createSameCustomerShowsErrorMessage() {
+    void createSameCustomerShowsErrorMessage() {
         customerRepository.save(new Customer("Stuf", "Bemundt", "stuf@switchfully.be", new Address("straat", "15", new PostalCode("2180", "Ekeren"), "Belgium"), new Phonenumber("123456789", CountryCode.BELGIUM), "password"));
 
         Response response = given()
@@ -139,7 +139,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    public void getAllCustomersHappyPath() {
+    void getAllCustomersHappyPath() {
 
         ShowCustomerDTO[] response = given()
                 .baseUri("http://localhost")
@@ -159,7 +159,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    public void getAllCustomers_asNonAdmin_unauthorized() {
+    void getAllCustomers_asNonAdmin_unauthorized() {
 
         Response response = given()
                 .baseUri("http://localhost")
@@ -180,7 +180,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    public void getExactCustomerHappyPath() {
+    void getExactCustomerHappyPath() {
 
         ShowCustomerDTO response = given()
                 .baseUri("http://localhost")
@@ -201,7 +201,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    public void getExactCustomer_asNonAdmin_unauthorized() {
+    void getExactCustomer_asNonAdmin_unauthorized() {
 
         Response response = given()
                 .baseUri("http://localhost")
@@ -221,7 +221,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    public void getExactCustomer_asNonMember_forbidden() {
+    void getExactCustomer_asNonMember_forbidden() {
 
         Response response = given()
                 .baseUri("http://localhost")

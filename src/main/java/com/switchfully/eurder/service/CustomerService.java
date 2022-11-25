@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.switchfully.eurder.domain.user.role.Feature.VIEW_CUSTOMERS;
 
@@ -40,7 +39,7 @@ public class CustomerService {
         return customerRepository.findAll()
                 .stream()
                 .map(customerMapper::mapToShowDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public ShowCustomerDTO getExactCustomer(Long id, String authorization) {

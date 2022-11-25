@@ -5,13 +5,13 @@ public enum CountryCode {
     FRANCE("+33"),
     NETHERLANDS("+31");
 
-    private String countryCode;
+    private String codeOfCountry;
 
     CountryCode(String countryCode) {
-        this.countryCode = countryCode;
+        this.codeOfCountry = countryCode;
     }
 
     public String getCountryCode() {
-        return countryCode;
+        return codeOfCountry;
     }
 }
