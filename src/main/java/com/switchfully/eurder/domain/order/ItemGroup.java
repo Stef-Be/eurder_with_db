@@ -34,6 +34,10 @@ public class ItemGroup {
         this.order = order;
     }
 
+    //calculate shippingdate in het domein zetten en aanroepen in de constructor (Domain-Driven-Design, Eric Evans)
+    //(Patterns, Principles, and Practices of Domain-Driven Design)
+
+
     public void setShippingDate(LocalDate shippingDate) {
         this.shippingDate = shippingDate;
     }

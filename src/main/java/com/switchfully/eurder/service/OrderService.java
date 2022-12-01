@@ -17,7 +17,6 @@ import javax.transaction.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.switchfully.eurder.domain.user.role.Feature.ORDER_ITEMS;
 import static com.switchfully.eurder.domain.user.role.Feature.VIEW_ALL_ORDERS;
@@ -50,7 +49,7 @@ public class OrderService {
         securityService.validateAuthorization(authorization, ORDER_ITEMS);
         orderValidationService.validateNoEmptyFields(newOrder);
 
-        Order orderToSave = orderMapper.mapToOrder(customerRepository.getCustomerByEmail(securityService.getEmail(authorization)).getId(), calculateFinalPriceOnReceipt(newOrder));
+        Order orderToSave = orderMapper.mapToOrder(getIdOfCustomer(authorization), calculateFinalPriceOnReceipt(newOrder));
 
         orderRepository.save(orderToSave);
 
@@ -59,20 +58,32 @@ public class OrderService {
         return getPrintOrderDTO(newOrder, authorization);
     }
 
-    //todo: refactor this method
+    private long getIdOfCustomer(String authorization) {
+        return customerRepository.getCustomerByEmail(securityService.getEmail(authorization)).getId();
+    }
+
     public OrderReportDTO getAllOrders(String authorization) {
         securityService.validateAuthorization(authorization, VIEW_ALL_ORDERS);
 
-        long customerIdToGetOrdersFrom = customerRepository.getCustomerByEmail(securityService.getEmail(authorization)).getId();
+        long customerIdToGetOrdersFrom = getIdOfCustomer(authorization);
 
         List<Order> orderList = orderRepository.findAllByCustomerId(customerIdToGetOrdersFrom);
-        List<List<ItemGroup>> itemGroupsList = orderList.stream().map(order -> itemGroupRepository.findAllByOrderId(order.getId())).toList();
-        List<ItemGroup> itemGroupList = itemGroupsList.stream().flatMap(List::stream).toList();
+
+        List<ItemGroup> itemGroupList = getItemGroupList(orderList);
+
         double finalFinalPrice = itemGroupList.stream().mapToDouble(ItemGroup::calculateFinalPrice).sum();
 
-        List<OneOrderForReportDTO> orderDtoList = orderList.stream().map(order -> orderMapper.mapToOrderForReport(order, itemGroupRepository.findAllByOrderId(order.getId()))).toList();
+        return new OrderReportDTO(getOneOrderForReportDTOS(orderList), finalFinalPrice);
+    }
 
-        return new OrderReportDTO(orderDtoList, finalFinalPrice);
+    private List<OneOrderForReportDTO> getOneOrderForReportDTOS(List<Order> orderList) {
+        return orderList.stream().map(order -> orderMapper.mapToOrderForReport(order, itemGroupRepository.findAllByOrderId(order.getId()))).toList();
+    }
+
+    private List<ItemGroup> getItemGroupList(List<Order> orderList) {
+        List<List<ItemGroup>> itemGroupsList = orderList.stream().map(order -> itemGroupRepository.findAllByOrderId(order.getId())).toList();
+
+        return itemGroupsList.stream().flatMap(List::stream).toList();
     }
 
     public void saveItemGroups(AddOrderDTO newOrder, Order orderToSave) {
